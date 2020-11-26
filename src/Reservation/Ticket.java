@@ -66,8 +66,7 @@ public class Ticket {
 	
 	@Override
 	public String toString() {
-		String str;
-		return str.format("Ticket Number: %d\n Theatre Name: %s\n  Movie Name: %s\n Showtime: %s\n Seat Number: %s\n",
+		return "".format("Ticket Number: %d\n Theatre Name: %s\n  Movie Name: %s\n Showtime: %s\n Seat Number: %s\n",
 				   		  this.getTicketNumber(), this.getTheatre().getTheatreName(), this.getMovie().getMovieName(),
 				   		  this.getShowtime().getTime(), this.getSeat().getSeatNumber());
 	}
