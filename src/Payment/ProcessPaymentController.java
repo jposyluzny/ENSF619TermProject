@@ -10,16 +10,15 @@ public class ProcessPaymentController {
 	
 	public void processPayment(PaymentInfo payment) {
 		FinancialInstitution.addPaymentToList(payment);
-		
-		//this method call will display a confirmation of payment message to the user.
+		checkTransactionType(payment);
+	}
+	
+	//this method call will display a confirmation of payment message to the user.
+	public void checkTransactionType(PaymentInfo payment) {
 		if (payment.getType())
 			this.getProcessPayment().sendPaymentMessageToUser();
 		else
 			this.getProcessPayment().sendRefundMessageToUser();
-	}
-	
-	public void processRefund(PaymentInfo payment) {
-		
 	}
 
 	public ProcessPayment getProcessPayment() {

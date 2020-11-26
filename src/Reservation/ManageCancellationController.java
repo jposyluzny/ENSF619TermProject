@@ -7,6 +7,11 @@ public class ManageCancellationController {
 	public ManageCancellationController() {
 		this.setCancellation(new Cancellation());
 	}
+	
+	public void getCancellationInfo() {
+		//NEED TO FETCH ticketNumbers TO BE CANCELLED FROM GUI
+		this.getCancellation().confirmCancellation(ticketNumbers);
+	}
 
 	public Cancellation getCancellation() {
 		return cancellation;

@@ -6,25 +6,22 @@ import Payment.PaymentInfo;
 
 public class Cancellation {
 	
-	private ArrayList<Ticket> ticketsList;
 	private PaymentInfo paymentInfo;
 	
-	public Cancellation() {
-		this.setTicketsList(new ArrayList<Ticket> ());
+	//gets ticket numbers to be cancelled from GUI
+	public void confirmCancellation(ArrayList<Integer> ticketNumbers) {
+		//Will be the kick off method to begin the cancellation process of removing tickets and processing refund.
 	}
 	
-	public void confirmCancellation(int ticketNumber) {
-		//fetch input from GUI
-		//will 
+	public void removeTicketsFromDatabase(ArrayList<Integer> ticketNumbers) {
+		TicketDBController tDBC = new TicketDBController();
+		tDBC.deleteTicketsFromDatabase(ticketNumbers);
 	}
 	
+	//processes cancellation
 	public void verifyCancellation() {
 		this.setPaymentInfo(new PaymentInfo());
 		this.getPaymentInfo().fetchPaymentInformation(this);
-	}
-	
-	public void removeTicketsFromDB() {
-		//call method from TicketDBController to delete tickets from DB
 	}
 
 	public ArrayList<Ticket> getTicketsList() {

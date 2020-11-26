@@ -7,20 +7,22 @@ public class PaymentInfo {
 	private ProcessPaymentController processPaymentController;
 	private String creditCard, description;
 	private int amount; 
-	//true is for regular payments, false is for cancellation refunds.
+	//True will be for payments, false will be for refunds.
 	private boolean type;
 
 	//This method will be called to pass info the getPaymentInfoFields method.
 	public void fetchPaymentInformation(Cancellation c) {
 
 		//NEED TO HAVE CODE HERE
+		//FETCH DATA FROM GUI SOMEHOW
 		//		this.getPaymentInfoFields(creditCard, description, amount, type);
 	}
 
 	//This method will be called to pass info the getPaymentInfoFields method.
 	public void fetchPaymentInformation(Reservation r) {
-
+		
 		//NEED TO HAVE CODE HERE
+		//FETCH DATA FROM GUI SOMEHOW
 		//			this.getPaymentInfoFields(creditCard, description, amount, type);
 	}
 	

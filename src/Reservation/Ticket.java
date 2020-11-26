@@ -17,6 +17,7 @@ public class Ticket {
 		this.setSeat(seat);
 	}
 	
+	
 	public int getTicketNumber() {
 		return ticketNumber;
 	}

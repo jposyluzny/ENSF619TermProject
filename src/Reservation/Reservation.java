@@ -24,6 +24,8 @@ public class Reservation {
 			this.addTicketToTicketsList(new Ticket(ticketNumber, theatre, movie, showtime, seat));
 			incrementTicketNumber();
 		}
+		TicketDBController tDBC = new TicketDBController();
+		tDBC.addTicketsListToDatabase(this.getTicketsList());
 	}
 	
 	public static void incrementTicketNumber() {
@@ -37,7 +39,7 @@ public class Reservation {
 	
 	public void confirmPayment() {
 		this.setPaymentInfo(new PaymentInfo());
-		this.getPaymentInfo().fetchPaymentInformation();
+		this.getPaymentInfo().fetchPaymentInformation(this);
 	}
 	
 	public void displayReservation() {
