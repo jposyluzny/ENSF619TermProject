@@ -5,6 +5,7 @@ public class RegisteredUserAccount {
 	private String name, address, creditCard, emailAddress, password;
 	private int userId;
 	
+	
 	public RegisteredUserAccount(String name, String address, String creditCard, String emailAddress, int userId, String password) {
 		this.setName(name);
 		this.setAddress(emailAddress);

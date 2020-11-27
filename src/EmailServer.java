@@ -2,16 +2,15 @@
 public class EmailServer {
 
 	private RegisteredUser rUser;
-	private String message;
-	
-	public void sendTicketEmail() {
-		
-	}
-	
-	public void sendPaymentConfirmation() {
-		
+
+	public String sendPaymentConfirmation() {
+		return "Payment confirmed!";
 	}
 
+	public String sendRefundConfirmation() {
+		return "Refund confirmed!";
+	}
+	
 	public RegisteredUser getrUser() {
 		return rUser;
 	}

@@ -3,7 +3,7 @@ public class RegisteredUser extends User{
 
 	private EmailServer eServ;
 	
-	public void login() {
+	public void login(int userId, String password) {
 		
 	}
 	
