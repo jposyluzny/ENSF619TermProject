@@ -29,10 +29,6 @@ public class Showtime {
     public int getId() {
         return id;
     }
-    
-    public ArrayList<Seat> getSeats() {
-    	return this.seats;
-    }
 
     public int getMovieid() {
         return movieid;
