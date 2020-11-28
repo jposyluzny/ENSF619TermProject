@@ -3,11 +3,12 @@ public class RegisteredUser extends User{
 
 	private EmailServer eServ;
 	
-	public void login(int userId, String password) {
-		
+	public String[] login(String email, String password) {
+		String[] credentials = {email, password};
+		return credentials;
 	}
 	
-	public void payFees() {
+	public void payFees(String email) {
 		
 	}
 

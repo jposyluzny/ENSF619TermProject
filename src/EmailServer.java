@@ -3,18 +3,21 @@ public class EmailServer {
 
 	private RegisteredUser rUser;
 
-	public String sendPaymentConfirmation() {
-		return "Payment confirmed!";
+	public String sendMoviePaymentConfirmation() {
+		return "Ticket payment confirmed!";
 	}
 
+	public String sendFeePaymentConfirmation() {
+		return "Annual fee payment confirmed!";
+	}
+	
 	public String sendRefundConfirmation() {
-		return "Refund confirmed!";
+		return "Ticket refund confirmed!";
 	}
 	
 	public RegisteredUser getrUser() {
 		return rUser;
 	}
-
 
 	public void setrUser(RegisteredUser rUser) {
 		this.rUser = rUser;
