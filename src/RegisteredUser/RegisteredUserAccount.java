@@ -3,12 +3,13 @@ package RegisteredUser;
 public class RegisteredUserAccount {
 
 	private RUserAccountController ruac;
-	private String name, address, creditCard, emailAddress, password;
+	private String firstName, lastName, address, creditCard, emailAddress, password;
 	private int userId;
 	
 	
-	public RegisteredUserAccount(String name, String address, String creditCard, String emailAddress, int userId, String password) {
-		this.setName(name);
+	public RegisteredUserAccount(String firstName, String lastName, String address, String creditCard, String emailAddress, int userId, String password) {
+		this.setFirstName(firstName);
+		this.setLastName(lastName);
 		this.setAddress(emailAddress);
 		this.setCreditCard(creditCard);
 		this.setEmailAddress(emailAddress);
@@ -16,14 +17,22 @@ public class RegisteredUserAccount {
 		this.setPassword(password);
 	}
 	
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return firstName;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 	
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
 	public String getAddress() {
 		return address;
 	}
@@ -74,7 +83,8 @@ public class RegisteredUserAccount {
 	
 	public String toString() {
 		String st = "";
-		st += "Name: " + getName() + ", ";
+		st += "First Name: " + getFirstName() + ", ";
+		st += "Last Name: " + getLastName() + ", ";
 		st += "Address: " + getAddress() + ", ";
 		st += "Credit Card: " + getCreditCard() + ", ";
 		st += "Email Address: " + getEmailAddress() + ", ";
