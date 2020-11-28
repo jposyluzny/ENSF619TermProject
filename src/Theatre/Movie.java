@@ -9,7 +9,6 @@ public class Movie {
     private int id;
 
     private ArrayList<Theatre> theatres;
-    public MovieDBController dbController;
 
     public Movie(int id, String name){
         this.id = id;
