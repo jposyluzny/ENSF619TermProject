@@ -1,3 +1,6 @@
+package RegisteredUser;
+
+import EmailServer.EmailServer;
 
 public class RegisteredUser extends User{
 
