@@ -11,11 +11,15 @@ public class ModelController {
     ShowtimeDBController showtimeDBController;
     SeatDBController seatDBController;
 
+    ArrayList<Movie> movies;
+
     public ModelController(){
         movieDBController = MovieDBController.getSingleInstance();
         theatreDBController = TheatreDBController.getSingleInstance();
         showtimeDBController = ShowtimeDBController.getSingleInstance();
         seatDBController = SeatDBController.getSingleInstance();
+
+        movies = getMovies();
     }
 
     public ArrayList<Movie> getMovies(){
@@ -85,6 +89,7 @@ public class ModelController {
         return seats;
     }
 
+    // Call this once to setup database
     private static void populateDBwithSeats(){
         ModelController a = new ModelController();
         ArrayList<Movie> b = a.getMovies();
@@ -92,9 +97,21 @@ public class ModelController {
         System.out.println("Done");
     }
 
+    public Movie getMovieById(int movieid){
+        for(Movie m: movies){
+            if(m.getId() == movieid)
+                return m;
+        }
+        System.out.println("Failed to find movie by ID: " + movieid);
+        return null;
+    }
+
+    public ArrayList<Movie> getMovieList(){
+        return getMovieList();
+    }
+
     public static void main(String[] args) {
         ModelController a = new ModelController();
-        ArrayList<Movie> b = a.getMovies();
 
         System.out.println("Done");
     }
