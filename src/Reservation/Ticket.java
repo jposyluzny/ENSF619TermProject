@@ -4,19 +4,25 @@ public class Ticket {
 	
 	//NOTE: I have a Seat object here instead of a primitive seatNumber type (int).
 	private int ticketNumber;
+	private String emailAddress;
 	private Theatre theatre;
 	private Movie movie;
 	private Showtime showtime;
 	private Seat seat;
 	
-	public Ticket(int ticketNumber, Theatre theatre, Movie movie, Showtime showtime, Seat seat) {
+	public Ticket(int ticketNumber, String emailAddress, Theatre theatre, Movie movie, Showtime showtime, Seat seat) {
 		this.setTicketNumber(ticketNumber);
+		this.setEmailAddress(emailAddress);
 		this.setTheatre(theatre);
 		this.setMovie(movie);
 		this.setShowtime(showtime);
 		this.setSeat(seat);
+		storeTickets();
 	}
 	
+	public static void storeTickets() {
+		StoreTickets.addTickets(this);
+	}
 	
 	public int getTicketNumber() {
 		return ticketNumber;
@@ -24,6 +30,14 @@ public class Ticket {
 	
 	public void setTicketNumber(int ticketNumber) {
 		this.ticketNumber = ticketNumber;
+	}
+	
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 	
 	public int getSeatNumber() {

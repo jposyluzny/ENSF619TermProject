@@ -10,11 +10,11 @@ public class FinancialInstitution {
 		setPaymentRecords(new ArrayList<PaymentInfo> ());
 	}
 	
-	public static void addPaymentToList(PaymentInfo payment) {
+	public static void addToFI(PaymentInfo payment) {
 		getPaymentRecords().add(payment);
 	}
 	
-	public static void clearPaymentList() {
+	public static void clearPayments() {
 		getPaymentRecords().clear();
 	}
 

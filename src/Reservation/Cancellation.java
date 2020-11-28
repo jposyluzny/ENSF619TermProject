@@ -8,28 +8,41 @@ public class Cancellation {
 	
 	private PaymentInfo paymentInfo;
 	
-	//gets ticket numbers to be cancelled from GUI
-	public void confirmCancellation(ArrayList<Integer> ticketNumbers) {
-		//Will be the kick off method to begin the cancellation process of removing tickets and processing refund.
+	//returns null if there are no tickets attached to that email address.
+	public ArrayList<Ticket> getAllTickets(String emailAddress) {
+		ArrayList<Ticket> arr = StoreTickets.getTickets();
+		arr = this.lookForUsersTickets(emailAddress, arr);
+		if (arr.size() == 0)
+			return null;
+		else
+			return arr;
 	}
 	
-	public void removeTicketsFromDatabase(ArrayList<Integer> ticketNumbers) {
-		TicketDBController tDBC = new TicketDBController();
-		tDBC.deleteTicketsFromDatabase(ticketNumbers);
+	public ArrayList<Ticket> lookForUsersTickets(String emailAddress, ArrayList<Ticket> arr) {
+		ArrayList<Ticket> userTickets = new ArrayList<Ticket> ();
+		for (Ticket t: arr) {
+			if (t.getEmailAddress().equals(emailAddress))
+				userTickets.add(t);
+		}
+		return userTickets;
 	}
 	
-	//processes cancellation
-	public void verifyCancellation() {
-		this.setPaymentInfo(new PaymentInfo());
-		this.getPaymentInfo().fetchPaymentInformation(this);
+	public void removeCancelledTickets(ArrayList<Ticket> arr) {
+		for (Ticket t: StoreTickets.getTickets()) {
+			for (Ticket tick: arr) {
+				if (t == tick)
+					StoreTickets.getTickets().remove(t);
+			}
+		}
 	}
-
-	public ArrayList<Ticket> getTicketsList() {
-		return ticketsList;
+	
+	//Amount here is off?
+	public void enterRefundInfo(String creditCard, String description, int amount) {
+		this.setPaymentInfo(new PaymentInfo(creditCard, description, amount, false));
 	}
-
-	public void setTicketsList(ArrayList<Ticket> ticketsList) {
-		this.ticketsList = ticketsList;
+	
+	public void confirmRefund() {
+		this.getPaymentInfo().confirmPayment();
 	}
 	
 	public PaymentInfo getPaymentInfo() {
@@ -39,14 +52,5 @@ public class Cancellation {
 	public void setPaymentInfo(PaymentInfo paymentInfo) {
 		this.paymentInfo = paymentInfo;
 	}
-
-	@Override
-	public String toString() {
-		StringBuffer str = new StringBuffer();
-		for (Ticket ticket: this.getTicketsList())
-			str.append("".format("Your ticket number %d for %s has been successfully cancelled.\n", ticket.getTicketNumber(),
-					   ticket.getMovie().getMovieName()));
-		return str.toString();
-	}
-
+	
 }
