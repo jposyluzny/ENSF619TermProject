@@ -1,5 +1,7 @@
 package Reservation;
 
+import Theatre.*;
+
 public class Ticket {
 	
 	//NOTE: I have a Seat object here instead of a primitive seatNumber type (int).
@@ -9,6 +11,7 @@ public class Ticket {
 	private Movie movie;
 	private Showtime showtime;
 	private Seat seat;
+	private int seatNumber;
 	
 	public Ticket(int ticketNumber, String emailAddress, Theatre theatre, Movie movie, Showtime showtime, Seat seat) {
 		this.setTicketNumber(ticketNumber);
@@ -20,7 +23,7 @@ public class Ticket {
 		storeTickets();
 	}
 	
-	public static void storeTickets() {
+	public void storeTickets() {
 		StoreTickets.addTickets(this);
 	}
 	
@@ -82,7 +85,7 @@ public class Ticket {
 	@Override
 	public String toString() {
 		return "".format("Ticket Number: %d\n Theatre Name: %s\n  Movie Name: %s\n Showtime: %s\n Seat Number: %s\n",
-				   		  this.getTicketNumber(), this.getTheatre().getTheatreName(), this.getMovie().getMovieName(),
+				   		  this.getTicketNumber(), this.getTheatre().getName(), this.getMovie().getName(),
 				   		  this.getShowtime().getTime(), this.getSeat().getSeatNumber());
 	}
 

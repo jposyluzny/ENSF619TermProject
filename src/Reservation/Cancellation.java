@@ -7,6 +7,7 @@ import Payment.PaymentInfo;
 public class Cancellation {
 	
 	private PaymentInfo paymentInfo;
+	public ArrayList<Ticket> ticketsList;
 	
 	//returns null if there are no tickets attached to that email address.
 	public ArrayList<Ticket> getAllTickets(String emailAddress) {
@@ -52,5 +53,5 @@ public class Cancellation {
 	public void setPaymentInfo(PaymentInfo paymentInfo) {
 		this.paymentInfo = paymentInfo;
 	}
-	
+
 }

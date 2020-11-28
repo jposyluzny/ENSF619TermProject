@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class ManageCancellationController {
 	
 	private Cancellation cancellation;
+	private ArrayList<Integer> ticketNumbers;
+
 	
 	public ManageCancellationController() {
 		this.setCancellation(new Cancellation());
