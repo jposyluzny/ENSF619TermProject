@@ -5,28 +5,20 @@ import java.util.ArrayList;
 public class ManageCancellationController {
 	
 	private Cancellation cancellation;
-	private ArrayList<Integer> ticketNumbers;
-
 	
 	public ManageCancellationController() {
 		this.setCancellation(new Cancellation());
 	}
-	
-	//returns null if no tickets are found
+
+	//Returns all tickets associated with a cancellation
 	public ArrayList<Ticket> makeCancellation(String emailAddress) {
-		ArrayList<Ticket> arr = this.getCancellation().getAllTickets(emailAddress);
-		if (arr == null)
-			return null;
-		else
-			return arr;
+		this.setCancellation(new Cancellation());
+		return this.getCancellation().lookForUsersTickets(emailAddress);
 	}
-	
-	public void removeCancelledTickets(ArrayList<Ticket> arr) {
-		this.getCancellation().removeCancelledTickets(arr);
-	}
-	
-	public void confirmCancellation(String creditCard, String description, int amount) {
-		this.getCancellation().enterRefundInfo(creditCard, description, amount);
+
+	//"Processes and sends the cancellation to the financial institution
+	public void confirmCancellation(String emailAddress, String creditCard, String description, int amount) {
+		this.getCancellation().confirmRefund(emailAddress, creditCard, description, amount);
 	}
 
 	public Cancellation getCancellation() {

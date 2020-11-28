@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class StoreTickets {
 	
-	private static ArrayList<Ticket> tickets;
+	private static ArrayList<Ticket> tickets = new ArrayList<Ticket> ();
 	
 	public static void addTickets(Ticket ticket) {
 		getTickets().add(ticket);

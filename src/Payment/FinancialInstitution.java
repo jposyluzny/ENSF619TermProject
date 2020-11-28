@@ -4,11 +4,7 @@ import java.util.ArrayList;
 
 public class FinancialInstitution {
 	
-	private static ArrayList<PaymentInfo> paymentRecords;
-	
-	public FinancialInstitution() {
-		setPaymentRecords(new ArrayList<PaymentInfo> ());
-	}
+	private static ArrayList<PaymentInfo> paymentRecords = new ArrayList<PaymentInfo> ();
 	
 	public static void addToFI(PaymentInfo payment) {
 		getPaymentRecords().add(payment);

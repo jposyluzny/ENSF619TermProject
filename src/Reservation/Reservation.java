@@ -20,9 +20,9 @@ public class Reservation {
 		this.setDate(this.createDate());
 	}
 	
-	public void buildTickets(int ticketNumber, String emailAddress, Theatre theatre, Movie movie, Showtime showtime, ArrayList<Seat> seats) {
+	public void buildTickets(String emailAddress, Theatre theatre, Movie movie, Showtime showtime, ArrayList<Seat> seats) {
 		for (Seat seat: seats) {
-			this.addTicketToTicketsList(new Ticket(ticketNumber, emailAddress, theatre, movie, showtime, seat));
+			this.addTicketToTicketsList(new Ticket(getTicketNumber(), emailAddress, theatre, movie, showtime, seat));
 			incrementTicketNumber();
 		}
 	}

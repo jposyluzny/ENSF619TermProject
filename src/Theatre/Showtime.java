@@ -29,6 +29,10 @@ public class Showtime {
     public int getId() {
         return id;
     }
+    
+    public ArrayList<Seat> getSeats() {
+    	return this.seats;
+    }
 
     public void setSeats(ArrayList<Seat> seats) {
         this.seats = seats;
