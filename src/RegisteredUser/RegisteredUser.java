@@ -1,8 +1,9 @@
 package RegisteredUser;
 
 import EmailServer.EmailServer;
+import User.User;
 
-public class RegisteredUser extends User{
+public class RegisteredUser extends User {
 
 	private EmailServer eServ;
 	
