@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import Payment.*;
+import Theatre.*;
 
 public class Reservation {
 	

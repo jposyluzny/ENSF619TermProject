@@ -1,1 +1,4 @@
 /bin/
+*.xml
+*.iml
+**/out/production/**

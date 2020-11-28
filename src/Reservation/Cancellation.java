@@ -7,6 +7,7 @@ import Payment.PaymentInfo;
 public class Cancellation {
 	
 	private PaymentInfo paymentInfo;
+	public ArrayList<Ticket> ticketsList;
 	
 	//gets ticket numbers to be cancelled from GUI
 	public void confirmCancellation(ArrayList<Integer> ticketNumbers) {
@@ -45,7 +46,7 @@ public class Cancellation {
 		StringBuffer str = new StringBuffer();
 		for (Ticket ticket: this.getTicketsList())
 			str.append("".format("Your ticket number %d for %s has been successfully cancelled.\n", ticket.getTicketNumber(),
-					   ticket.getMovie().getMovieName()));
+					   ticket.getMovie().getName()));
 		return str.toString();
 	}
 
