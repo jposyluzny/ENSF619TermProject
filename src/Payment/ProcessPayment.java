@@ -2,10 +2,12 @@ package Payment;
 
 public class ProcessPayment {
 	
-	private FinancialInstitution financialInst;
+	public void addPaymentToList(PaymentInfo payment) {
+		FinancialInstitution.addToFI(payment);
+	}
 	
-	public ProcessPayment() {
-		this.setFinancialInst(new FinancialInstitution());
+	public static void clearPaymentList() {
+		FinancialInstitution.clearPayments();
 	}
 	
 	public String sendPaymentMessageToUser() {
@@ -14,14 +16,6 @@ public class ProcessPayment {
 	
 	public String sendRefundMessageToUser() {
 		return "Refund completed successfully.";
-	}
-
-	public FinancialInstitution getFinancialInst() {
-		return financialInst;
-	}
-
-	public void setFinancialInst(FinancialInstitution financialInst) {
-		this.financialInst = financialInst;
 	}
 
 }

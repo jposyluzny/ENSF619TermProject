@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import Payment.*;
+import Theatre.*;
 
 public class Reservation {
 	
@@ -19,17 +20,15 @@ public class Reservation {
 		this.setDate(this.createDate());
 	}
 	
-	public void buildTickets(int ticketNumber, Theatre theatre, Movie movie, Showtime showtime, ArrayList<Seat> seats) {
+	public void buildTickets(int ticketNumber, String emailAddress, Theatre theatre, Movie movie, Showtime showtime, ArrayList<Seat> seats) {
 		for (Seat seat: seats) {
-			this.addTicketToTicketsList(new Ticket(ticketNumber, theatre, movie, showtime, seat));
+			this.addTicketToTicketsList(new Ticket(ticketNumber, emailAddress, theatre, movie, showtime, seat));
 			incrementTicketNumber();
 		}
-		TicketDBController tDBC = new TicketDBController();
-		tDBC.addTicketsListToDatabase(this.getTicketsList());
 	}
 	
 	public static void incrementTicketNumber() {
-		ticketNumber = getTicketNumber() + 1;
+		ticketNumber++;
 	}
 	
 	public String createDate() {
@@ -37,9 +36,13 @@ public class Reservation {
 		return formatter.format(new Date());
 	}
 	
+	//type is fixed as true as true represents a reservation, false is for Cancellations
+	public void enterPayment(String creditCard, String description, int amount) {
+		this.setPaymentInfo(new PaymentInfo(creditCard, description, amount, true));
+	}
+	
 	public void confirmPayment() {
-		this.setPaymentInfo(new PaymentInfo());
-		this.getPaymentInfo().fetchPaymentInformation(this);
+		this.getPaymentInfo().confirmPayment();
 	}
 	
 	public void displayReservation() {

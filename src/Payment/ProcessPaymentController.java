@@ -8,12 +8,13 @@ public class ProcessPaymentController {
 		this.setProcessPayment(new ProcessPayment());
 	}
 	
-	public void processPayment(PaymentInfo payment) {
-		FinancialInstitution.addPaymentToList(payment);
+	public void confirmPayment(PaymentInfo payment) {
+		this.getProcessPayment().addPaymentToList(payment);
 		checkTransactionType(payment);
 	}
 	
 	//this method call will display a confirmation of payment message to the user.
+	//True is for a reservation, false is for a refund
 	public void checkTransactionType(PaymentInfo payment) {
 		if (payment.getType())
 			this.getProcessPayment().sendPaymentMessageToUser();

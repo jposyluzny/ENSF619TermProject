@@ -1,42 +1,23 @@
 package Payment;
 
-import Reservation.*;
-
 public class PaymentInfo {
 	
 	private ProcessPaymentController processPaymentController;
-	private String creditCard, description;
+	private String creditCard, description; //expiration date instead of description
 	private int amount; 
 	//True will be for payments, false will be for refunds.
 	private boolean type;
-
-	//This method will be called to pass info the getPaymentInfoFields method.
-	public void fetchPaymentInformation(Cancellation c) {
-
-		//NEED TO HAVE CODE HERE
-		//FETCH DATA FROM GUI SOMEHOW
-		//		this.getPaymentInfoFields(creditCard, description, amount, type);
-	}
-
-	//This method will be called to pass info the getPaymentInfoFields method.
-	public void fetchPaymentInformation(Reservation r) {
-		
-		//NEED TO HAVE CODE HERE
-		//FETCH DATA FROM GUI SOMEHOW
-		//			this.getPaymentInfoFields(creditCard, description, amount, type);
-	}
 	
-	//Need to have information fetched into this method.
-	public void getPaymentInfoFields(String creditCard, String description, int amount, boolean type) {
+	public PaymentInfo (String creditCard, String description, int amount, boolean type) {
 		this.setCreditCard(creditCard);
 		this.setDescription(description);
 		this.setAmount(amount);
 		this.setType(type);
 		this.setProcessPaymentController(new ProcessPaymentController());
 	}
-	
-	public void sendToProcessPaymentController() {
-		this.getProcessPaymentController().processPayment(this);
+
+	public void confirmPayment() {
+		this.getProcessPaymentController().confirmPayment(this);
 	}
 	
 	public ProcessPaymentController getProcessPaymentController() {
