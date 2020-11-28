@@ -15,6 +15,8 @@ public class Theatre {
         this.name = name;
     }
 
+    
+
     public void setShowtimes(ArrayList<Showtime> showtimes) {
         this.showtimes = showtimes;
     }
