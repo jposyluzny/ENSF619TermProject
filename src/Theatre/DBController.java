@@ -55,16 +55,5 @@ public class DBController {
         }
     }
 
-//    /**
-//     * Method of getting singleton instance of Connection
-//     * @return Single Connection instance
-//     */
-//    public static Connection getInstance(){
-//        if(jdbc_connection == null){
-//            new DBController();
-//        }
-//        return jdbc_connection;
-//    }
-
 
 }

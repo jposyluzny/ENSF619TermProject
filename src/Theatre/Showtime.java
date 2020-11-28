@@ -34,6 +34,22 @@ public class Showtime {
     	return this.seats;
     }
 
+    public int getMovieid() {
+        return movieid;
+    }
+
+    public int getScreen() {
+        return screen;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public ArrayList<Seat> getSeats() {
+        return seats;
+    }
+
     public void setSeats(ArrayList<Seat> seats) {
         this.seats = seats;
     }
