@@ -66,3 +66,11 @@ CREATE TABLE ticket (
   foreign key (showtime) references showtime(showid),
   foreign key (movie) references movie(movieid)
 );
+
+DROP TABLE IF EXISTS voucher;
+CREATE TABLE voucher (
+  count        integer not null,
+  email		   varchar(100) not null,
+  unique (email),
+  primary key (email)
+);
