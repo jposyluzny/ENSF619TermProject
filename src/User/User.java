@@ -24,6 +24,8 @@ public class User {
 		this.setUserSelectedMovie(this.modelController.getMovieById(movieID));
 	}
 	
+	
+	
 	public void calculateReservationPrice(ArrayList<Seat> s) {
 		for (Seat seat: s)
 			this.reservationPrice = this.reservationPrice + 12;
