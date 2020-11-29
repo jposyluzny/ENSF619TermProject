@@ -54,4 +54,8 @@ VALUES	(1, "John", "Smith", "123 Calgary Ave", "jsmith@fake.com", "pass123", 123
         (7, "Tyla", "Olson", "123 Toronto Ave", "tolson@fake.com", "pass123", 828803, "1/8/21"),
         (8, "Lexi", "Miller", "321 Toronto Ave", "jsmith@fake.com", "pass123", 724329, "1/9/21");
 
+-- Populating some vouchers
+INSERT INTO voucher
+VALUES (1, "testemail@fake.com"),
+	   (1, "vouchertest@fake.com);
 
