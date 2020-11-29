@@ -84,6 +84,11 @@ public class BrowseSeatUI extends JPanel {
 		theatreDiagram.setBackground(Color.WHITE);
 	}
 	
+	public void clearDisplay() {
+		for(int i=0;i<20;i++) {
+			seats[i].setText("");
+		}
+	}
 	
 	public JButton[] getSeats() {
 		return seats;

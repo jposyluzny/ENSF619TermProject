@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -64,6 +65,17 @@ public class AccountUI extends JPanel {
 	    return panel;
 	}
 
+	
+	public void displayUpdateMessage() {
+		JOptionPane.showMessageDialog(null, "User information updated");
+	}
+	
+	public void displayRegisterMessage() {
+		JOptionPane.showMessageDialog(null, "Successfully registered account");
+	}
+
+	
+	
 	public JButton getMakeAccountButton() {
 		return makeAccountButton;
 	}
