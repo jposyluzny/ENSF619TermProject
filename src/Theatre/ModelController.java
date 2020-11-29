@@ -110,6 +110,15 @@ public class ModelController {
     public Voucher findVoucher(String email){
         return Voucher.findByEmail(vouchers, email);
     }
+    
+    public void removeVoucher(Voucher voucher) {
+    	for (Voucher v: this.getVouchers()) {
+    		if (v == voucher) {
+    			this.getVouchers().remove(v);
+    			return;
+    		}
+    	}
+    }
 
     // Call this once to setup database
     private static void populateDBwithSeats(){
@@ -131,10 +140,15 @@ public class ModelController {
     public ArrayList<Movie> getMovieList(){
         return getMovieList();
     }
+    
+	public ArrayList<Voucher> getVouchers() {
+		return vouchers;
+	}
 
     public static void main(String[] args) {
         ModelController a = new ModelController();
         Voucher v = a.findVoucher("testemail@fake.com");
         System.out.println("Done");
     }
+
 }

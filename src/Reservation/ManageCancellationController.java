@@ -17,7 +17,7 @@ public class ManageCancellationController {
 	}
 
 	//"Processes and sends the cancellation to the financial institution
-	public void confirmCancellation(String emailAddress, String creditCard, String description, int amount) {
+	public void confirmCancellation(String emailAddress, String creditCard, String description, double amount) {
 		this.getCancellation().confirmRefund(emailAddress, creditCard, description, amount);
 	}
 

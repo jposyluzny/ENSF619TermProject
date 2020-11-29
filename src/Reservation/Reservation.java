@@ -37,7 +37,7 @@ public class Reservation {
 	}
 	
 	//type is fixed as true as true represents a reservation, false is for Cancellations
-	public void enterPayment(String creditCard, String description, int amount) {
+	public void enterPayment(String creditCard, String description, double amount) {
 		this.setPaymentInfo(new PaymentInfo(creditCard, description, amount, true));
 	}
 	

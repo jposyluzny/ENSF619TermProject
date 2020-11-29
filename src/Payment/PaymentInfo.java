@@ -6,11 +6,11 @@ public class PaymentInfo {
 	
 	private ProcessPaymentController processPaymentController;
 	private String creditCard, description; //expiration date instead of description
-	private int amount; 
+	private double amount; 
 	//True will be for payments, false will be for refunds.
 	private boolean type;
 	
-	public PaymentInfo (String creditCard, String description, int amount, boolean type) {
+	public PaymentInfo (String creditCard, String description, double amount, boolean type) {
 		this.setCreditCard(creditCard);
 		this.setDescription(description);
 		this.setAmount(amount);
@@ -38,11 +38,11 @@ public class PaymentInfo {
 		this.creditCard = creditCard;
 	}
 
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	
@@ -64,7 +64,7 @@ public class PaymentInfo {
 	
 	@Override
 	public String toString() {
-		return "".format("Creditcard Number: %s\n Payment amount: %d\n", this.getCreditCard(), this.getAmount());
+		return "".format("Creditcard Number: %s\n Payment amount: %f\n", this.getCreditCard(), this.getAmount());
 	}
 
 }

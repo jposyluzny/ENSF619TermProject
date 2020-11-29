@@ -36,11 +36,11 @@ public class Cancellation {
 		}
 	}
 	
-	public void enterRefundInfo(String creditCard, String description, int amount) {
+	public void enterRefundInfo(String creditCard, String description, double amount) {
 		this.setPaymentInfo(new PaymentInfo(creditCard, description, amount, false));
 	}
 	
-	public void confirmRefund(String emailAddress, String creditCard, String description, int amount) {
+	public void confirmRefund(String emailAddress, String creditCard, String description, double amount) {
 		this.enterRefundInfo(creditCard, description, amount);
 		this.getPaymentInfo().confirmPayment();
 		this.removeCancelledTickets(emailAddress);

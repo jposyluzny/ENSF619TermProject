@@ -12,7 +12,7 @@ public class User {
 	Movie userSelectedMovie;
 	Reservation userReservation;
 	ManageCancellationController mcc;
-	int reservationPrice;
+	double reservationPrice;
 
 	public User(){
 		modelController = new ModelController();
@@ -23,8 +23,6 @@ public class User {
 	public void userSelection(int movieID) {
 		this.setUserSelectedMovie(this.modelController.getMovieById(movieID));
 	}
-	
-	
 	
 	public void calculateReservationPrice(ArrayList<Seat> s) {
 		for (Seat seat: s)
@@ -49,6 +47,24 @@ public class User {
 		this.getUserReservation().confirmPayment();
 	}
 	
+	//This will return false if there are No vouchers associated with the users email address. It will return true if
+	//there is a voucher.
+	public boolean findVoucher(String emailAddress) {
+		Voucher v = this.getModelController().findVoucher(emailAddress);
+		if (v == null)
+			return false;
+		else {
+			this.applyVoucherDiscount(v);
+			return true;
+		}
+	}
+	
+	//This will apply a 15% discount to the reservation price.
+	public void applyVoucherDiscount(Voucher v) {
+		this.setReservationPrice(this.getReservationPrice()*0.85);
+		this.getModelController().removeVoucher(v);
+	}
+	
 	//Returns all tickets associated with a cancellation
 	public ArrayList<Ticket> makeCancellation(String emailAddress) {
 		return this.getMcc().makeCancellation(emailAddress);
@@ -57,6 +73,14 @@ public class User {
 	//"Processes and sends the cancellation to the financial institution
 	public void confirmCancellation(String emailAddress, String creditCard, String description) {
 		this.getMcc().confirmCancellation(emailAddress, creditCard, description, this.getReservationPrice());
+	}
+	
+	public ModelController getModelController() {
+		return modelController;
+	}
+
+	public void setModelController(ModelController modelController) {
+		this.modelController = modelController;
 	}
 	
 	public Movie getUserSelectedMovie() {
@@ -83,11 +107,11 @@ public class User {
 		this.mcc = mcc;
 	}
 	
-	public int getReservationPrice() {
+	public double getReservationPrice() {
 		return reservationPrice;
 	}
 
-	public void setReservationPrice(int reservationPrice) {
+	public void setReservationPrice(double reservationPrice) {
 		this.reservationPrice = reservationPrice;
 	}
 	
