@@ -1,14 +1,7 @@
+package GUI;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.ArrayList;
-
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 
 public class BrowseMoviesUI extends JPanel {
 	
@@ -23,43 +16,12 @@ public class BrowseMoviesUI extends JPanel {
 	private JList<String> searchList;
 	private JComboBox<String> theatreList = new JComboBox<String>();
 	private JComboBox<String> showTimeList = new JComboBox<String>();
-	private BrowseSeatUI seatDiagramPanel;
-	
-	
-	//user inputs
-	String movieName=null;
-	String theatreName=null;
-	String showTime=null;
-	
-	//fake data here
-	private ArrayList<String> movies = new ArrayList<String>();
-	private ArrayList<String> theatreMovies = new ArrayList<String>();
-	private String[] theatres = {"Crowfoot","Country Hills","Signal Hill","Westbrook"};
-	
-	public BrowseMoviesUI(int choice){ 
-		makePanel(choice);
-		makeFakeData();
-		addButtonListeners();
-		addComboBoxListener();
-		addListListener();
-	}
-	
-	//make fake data
-	private void makeFakeData() {
-		movies.add("Greenland");
-		movies.add("The New Mutants");
-		movies.add("Ludo");
-		movies.add("Jiu Jitsu");
-		movies.add("Tenet");
 
-		theatreMovies.add("Greenland,The New Mutants,Ludo");
-		theatreMovies.add("Ludo,Jiu Jitsu");
-		theatreMovies.add("The New Mutants,Jiu Jitsu,Tenet");
-		theatreMovies.add("Greenland,The New Mutants,Ludo,Jiu Jitsu,Tenet");
-		
+	public BrowseMoviesUI(){  
+		makePanel(); 
 	}
-		
-	private void makePanel(int choice) { //choice = registered(2) or ordinary(1)
+	
+	private void makePanel() { 
 		this.setLayout(new GridBagLayout());	
 		JLabel panelTitle = new JLabel("Reserve a Ticket",SwingConstants.CENTER);
 		panelTitle.setFont(new Font(Font.DIALOG, Font.BOLD, 16));
@@ -81,17 +43,13 @@ public class BrowseMoviesUI extends JPanel {
 		this.add(theatrePanel,gbc);
 		
 		gbc.gridy = 3;
-		showTimeList.setPreferredSize(new Dimension(100,20));
+		showTimeList.setPreferredSize(new Dimension(200,20));
 		createSearchField(new JLabel("Search ShowTimes"),showTimePanel,showTimeList);
 		this.add(showTimePanel,gbc);
 		
 		
 		gbc.gridy = 4;
 		this.add(seatButton,gbc);
-		
-		gbc.gridy=5;
-		seatDiagramPanel = new BrowseSeatUI(choice);
-		this.add(seatDiagramPanel,gbc);
 		
 	}
 	
@@ -141,86 +99,29 @@ public class BrowseMoviesUI extends JPanel {
         layout.putConstraint(SpringLayout.EAST, movieInputPanel, 5, SpringLayout.EAST, moviePanel); 
         layout.putConstraint(SpringLayout.SOUTH, movieInputPanel, 5, SpringLayout.SOUTH, moviePanel); 
 	}
-
-	//DUMMY METHODS TO CHANGE
-	private void findTheatres(String movie) {
-		for(int i=0;i<theatreMovies.size();i++) {
-			if(theatreMovies.get(i).contains(movie)) {
-				theatreList.addItem(theatres[i]);
-			}
-		}
-	}
-	
-	private void findShowTimes() {
-		showTimeList.removeAllItems();
-		showTimeList.addItem("1:00");
-		showTimeList.addItem("3:00");
-		showTimeList.addItem("5:00");
-		showTimeList.addItem("7:00");
-	}
 	
 	
-	private void addButtonListeners() {
-		//button1
-		searchButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-		    	DefaultListModel<String> DLM = new DefaultListModel();
-		    	theatreList.removeAllItems();		    	
-		    	String movie = movieInput.getText();
-
-		    	for(String s:movies) {
-		    		if(s.contains(movie)) {
-		    			DLM.addElement(s);
-		    		}
-		    	}
-		    	searchList.setModel(DLM);
-		    }
-		});  
-		
-		//button2
-		seatButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-		    	if(movieName!=null && theatreName!=null && showTime!=null) {
-		    		System.out.println("Viewing available seats for: "+movieName+";"+theatreName+";"+showTime);
-		    		seatDiagramPanel.getAvailableSeats(movieName,theatreName,showTime);
-		    	}
-		    }
-		});
-	}
-	
-	private void addListListener() {
-		MouseListener m = new MouseAdapter() {
-			public void mouseClicked(MouseEvent e) {
-				theatreList.removeAllItems();
-				if(e.getClickCount()==1) {
-					try {
-						movieName = searchList.getSelectedValue();
-						findTheatres(movieName);
-					}
-					catch(NullPointerException n) { }
-				}
-				
-			}
-		};
-		searchList.addMouseListener(m);
-	}
-	
-	private void addComboBoxListener() {
-		theatreList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-		        JComboBox cb = (JComboBox)e.getSource();
-		        theatreName = (String)cb.getSelectedItem();
-		        findShowTimes();
-		    }
-		});
-		
-		showTimeList.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-		        JComboBox cb = (JComboBox)e.getSource();
-		        showTime = (String)cb.getSelectedItem();
-		    }
-		});
+	public JButton getSearchButton() {
+		return searchButton;
 	}
 
+	public JButton getSeatButton() {
+		return seatButton;
+	}
+	public JTextField getMovieInput() {
+		return movieInput;
+	}
+
+	public JList<String> getSearchList() {
+		return searchList;
+	}
+
+	public JComboBox<String> getTheatreList() {
+		return theatreList;
+	}
+
+	public JComboBox<String> getShowTimeList() {
+		return showTimeList;
+	}
 
 }

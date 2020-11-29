@@ -2,19 +2,19 @@ package RegisteredUser;
 
 public class RegisteredUserAccount {
 
-	private RUserAccountController ruac;
-	private String firstName, lastName, address, creditCard, emailAddress, password;
-	private int userId;
+	private String firstName, lastName, address, email, password, expiry;
+	private int userId, creditCard;
 	
 	
-	public RegisteredUserAccount(String firstName, String lastName, String address, String creditCard, String emailAddress, int userId, String password) {
+	public RegisteredUserAccount(int userId, String firstName, String lastName, String address, String email, String password, int creditCard, String expiry) {
+		this.setUserId(userId);
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
-		this.setAddress(emailAddress);
-		this.setCreditCard(creditCard);
-		this.setEmailAddress(emailAddress);
-		this.setUserId(userId);
+		this.setAddress(address);
+		this.setEmailAddress(email);
 		this.setPassword(password);
+		this.setCreditCard(creditCard);
+		this.setExpiry(expiry);
 	}
 	
 	public String getFirstName() {
@@ -41,20 +41,20 @@ public class RegisteredUserAccount {
 		this.address = address;
 	}
 	
-	public String getCreditCard() {
+	public int getCreditCard() {
 		return creditCard;
 	}
 	
-	public void setCreditCard(String creditCard) {
+	public void setCreditCard(int creditCard) {
 		this.creditCard = creditCard;
 	}
 	
 	public String getEmailAddress() {
-		return emailAddress;
+		return email;
 	}
 	
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
+	public void setEmailAddress(String email) {
+		this.email = email;
 	}
 	
 	public String getPassword() {
@@ -72,24 +72,25 @@ public class RegisteredUserAccount {
 	public void setUserId(int userId) {
 		this.userId = userId;
 	}
-
-	public RUserAccountController getRuac() {
-		return ruac;
-	}
-
-	public void setRuac(RUserAccountController ruac) {
-		this.ruac = ruac;
-	}
 	
+	public String getExpiry() {
+		return expiry;
+	}
+
+	public void setExpiry(String expiry) {
+		this.expiry = expiry;
+	}
+
 	public String toString() {
 		String st = "";
+		st += "User ID: " + getUserId() + ", ";
 		st += "First Name: " + getFirstName() + ", ";
 		st += "Last Name: " + getLastName() + ", ";
 		st += "Address: " + getAddress() + ", ";
-		st += "Credit Card: " + getCreditCard() + ", ";
 		st += "Email Address: " + getEmailAddress() + ", ";
-		st += "User ID: " + getUserId() + ", ";
-		st += "Password: " + getPassword();
+		st += "Password: " + getPassword() + ", ";
+		st += "Credit Card: " + getCreditCard() + ", ";
+		st += "Expiry date: " + getExpiry();
 		return st;
 	}
 }

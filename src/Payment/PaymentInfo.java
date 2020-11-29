@@ -1,5 +1,7 @@
 package Payment;
 
+import RegisteredUser.RUserAccountController;
+
 public class PaymentInfo {
 	
 	private ProcessPaymentController processPaymentController;

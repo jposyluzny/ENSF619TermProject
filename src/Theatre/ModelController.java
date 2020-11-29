@@ -10,16 +10,20 @@ public class ModelController {
     TheatreDBController theatreDBController;
     ShowtimeDBController showtimeDBController;
     SeatDBController seatDBController;
+    VoucherDBController voucherDBController;
 
     ArrayList<Movie> movies;
+    ArrayList<Voucher> vouchers;
 
     public ModelController(){
         movieDBController = MovieDBController.getSingleInstance();
         theatreDBController = TheatreDBController.getSingleInstance();
         showtimeDBController = ShowtimeDBController.getSingleInstance();
         seatDBController = SeatDBController.getSingleInstance();
+        voucherDBController = VoucherDBController.getSingleInstance();
 
         movies = getMovies();
+        populateVouchers();
     }
 
     public ArrayList<Movie> getMovies(){
@@ -89,6 +93,24 @@ public class ModelController {
         return seats;
     }
 
+    private void populateVouchers(){
+        ResultSet dbvouchers = voucherDBController.getVouchers();
+        vouchers = new ArrayList<Voucher>();
+        try {
+            while (dbvouchers.next()) {
+                Voucher newVoucher = new Voucher(dbvouchers.getInt("count"), dbvouchers.getString("email"));
+                vouchers.add(newVoucher);
+            }
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public Voucher findVoucher(String email){
+        return Voucher.findByEmail(vouchers, email);
+    }
+
     // Call this once to setup database
     private static void populateDBwithSeats(){
         ModelController a = new ModelController();
@@ -112,7 +134,7 @@ public class ModelController {
 
     public static void main(String[] args) {
         ModelController a = new ModelController();
-
+        Voucher v = a.findVoucher("testemail@fake.com");
         System.out.println("Done");
     }
 }

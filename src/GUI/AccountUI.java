@@ -1,121 +1,91 @@
+package GUI;
 
+import java.awt.BorderLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 
-public class AccountUI extends GuestUI {
+public class AccountUI extends JPanel {
 	
-	String userEmail;
-	private JPanel updateAccountPanel = new JPanel();
+	private JButton makeAccountButton = new JButton("Create Account");
+	private JTextField emailInput = new JTextField(12);
+	private JTextField passwordInput = new JTextField(12);
+	private JTextField creditInput = new JTextField(12);
+	private JTextField nameInput = new JTextField(12);
+	private JTextField addressInput = new JTextField(12);
 	
-	//Buttons for registered user UI
-	private JButton button4 = new JButton("Update your account");
-	private JButton button5 = new JButton("Pay annual registration fee");
-	
-	
-	protected void createGUI(String email) {
-		this.userEmail = email;
-		makeRegisteredUserPanel(email);
-		setUpGUI();
+	public AccountUI() {
+		makePanel();
 	}
-	
-	private void makeRegisteredUserPanel(String email) {
-		JButton[] buttons = {button1, button2, button4,button5};
-		createLeftPanel("Welcome Back "+email,buttons);
-		addButtonListeners();		
-	}
-	
-	private void createReserveTicketPanel() {
-		reserveTicketPanel.setLayout(new GridLayout(2,1));	
-		reserveTicketPanel.add(new BrowseMoviesUI(2));	
-	}
-	
-	private void createCancelTicketPanel() {
-		CancellationUI panel = new CancellationUI();
-		panel.setEmailField(userEmail);
-		panel.getListOfTickets(userEmail);
-		cancelTicketPanel = panel;
-	}
-	
-	private void createUpdatePanel() {
-		makeAccountButton.setText("Update Account");
-		createAccountPanel("Update Your Account",updateAccountPanel);
-		
-		nameInput.setText("Placeholder name");
-		addressInput.setText("Placeholder address");
-		emailInput.setText(userEmail);
-		passwordInput.setText("Placeholder password");
-		creditInput.setText("Placeholder credit");
-	}
-	
-	
-	private void addButtonListeners() {
-		//button1
-		button1.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent arg0) {
-		    	reserveTicketPanel.removeAll();
-		    	rightPanel.removeAll();
-		    	createReserveTicketPanel();
-		    	rightPanel.add(reserveTicketPanel);
-		    	revalidate();
-		    	repaint();
-		    }
-		});
-		
-		//button2
-		button2.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent arg0) {
-		    	cancelTicketPanel.removeAll();
-		    	rightPanel.removeAll();
-		    	createCancelTicketPanel();
-		    	rightPanel.add(cancelTicketPanel);
-		    	revalidate();
-		    	repaint();
-		    }
-		});
-		
-		//button4
-		button4.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent arg0) {
-		    	updateAccountPanel.removeAll();
-		    	rightPanel.removeAll();
-		    	createUpdatePanel();
-		    	rightPanel.add(updateAccountPanel);
-		    	revalidate();
-		    	repaint();
-		    }
-		});
-		
-		//payment
-		button5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PaymentUI payment = new PaymentUI();
-				String[] paymentInfo = payment.paymentInfoDialog(2,20);
-		    }
-		});
 
-		makeAccountButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String newName = nameInput.getText();
-				String newAddress = addressInput.getText();
-		    	String newEmail = emailInput.getText();
-		    	String newPassword = passwordInput.getText();
-		    	String newCredit = creditInput.getText();
-		    	
-		    	if(!newName.equals("") && !newAddress.equals("") && !newEmail.equals("") 
-		    			&& !newPassword.equals("") && !newCredit.equals("")) {
-		    		
-		    		System.out.println("Register an account with "+newEmail+";"+newPassword+";"+newCredit);
-		    	}
-		    	
-		    }
-		});
-	}
-	
+	private void makePanel() {
+		JLabel panelTitle = new JLabel("Enter Information",SwingConstants.CENTER);
+		panelTitle.setFont(new Font(Font.DIALOG, Font.BOLD, 16));
+		
+		this.setLayout(new BorderLayout());
+		this.add(panelTitle, BorderLayout.NORTH);
+		
+		JPanel innerPanel = new JPanel();
+		innerPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.gridx = 0;
+		gbc.gridy = 0;
 
+		gbc.gridy = 1;
+		innerPanel.add(formatLabelAndInput("Name   ",nameInput),gbc);
+		gbc.gridy = 2;
+		innerPanel.add(formatLabelAndInput("Address   ",addressInput),gbc);
+		gbc.gridy = 3;
+		innerPanel.add(formatLabelAndInput("Email   ",emailInput),gbc);
+		gbc.gridy = 4;
+		innerPanel.add(formatLabelAndInput("Password   ",passwordInput),gbc);
+		gbc.gridy = 5;
+		innerPanel.add(formatLabelAndInput("Credit   ",creditInput),gbc);
+		gbc.gridy = 6;
+		innerPanel.add(makeAccountButton,gbc);
+		
+		this.add(innerPanel, BorderLayout.SOUTH);
+	}
+		
+	private JPanel formatLabelAndInput(String text, JTextField textField) {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(1,2));
+		panel.add(new JLabel(text));
+		panel.add(textField);
+	    return panel;
+	}
+
+	public JButton getMakeAccountButton() {
+		return makeAccountButton;
+	}
+
+	public JTextField getEmailInput() {
+		return emailInput;
+	}
+
+	public JTextField getPasswordInput() {
+		return passwordInput;
+	}
+
+	public JTextField getCreditInput() {
+		return creditInput;
+	}
+
+	public JTextField getNameInput() {
+		return nameInput;
+	}
+
+	public JTextField getAddressInput() {
+		return addressInput;
+	}
 
 }
