@@ -1,6 +1,7 @@
 package Theatre;
 
 import java.sql.Connection;
+import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -34,7 +35,7 @@ public class DBController {
     /**
      * Password
      */
-    protected String password  ="dbpass";
+    protected String password = "dbpass";
 
     /**
      * Constructor for DBController.
@@ -43,13 +44,14 @@ public class DBController {
         if(jdbc_connection == null) {
             try {
                 // If this throws an error, make sure you have added the mySQL connector JAR to the project
-                Class.forName("com.mysql.jdbc.Driver");
+                Driver driver = new com.mysql.cj.jdbc.Driver();
+                DriverManager.registerDriver(driver);
 
                 // If this fails make sure your connectionInfo and login/password are correct
                 jdbc_connection = DriverManager.getConnection(connectionInfo, login, password);
                 System.out.println("Connected to: " + connectionInfo + "\n");
 
-            } catch (ClassNotFoundException | SQLException e) {
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }

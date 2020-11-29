@@ -112,7 +112,6 @@ public class ModelController {
 
     public static void main(String[] args) {
         ModelController a = new ModelController();
-
         System.out.println("Done");
     }
 }

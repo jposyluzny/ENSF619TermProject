@@ -57,7 +57,6 @@ public class User {
 		this.getMcc().confirmCancellation(emailAddress, creditCard, description, this.getReservationPrice());
 	}
 	
-	
 	public Movie getUserSelectedMovie() {
 		return userSelectedMovie;
 	}
