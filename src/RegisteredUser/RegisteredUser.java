@@ -8,7 +8,6 @@ import Payment.PaymentInfo;
 import Reservation.Reservation;
 import Reservation.StoreTickets;
 import Reservation.Ticket;
-import Theatre.Seat;
 import User.User;
 
 public class RegisteredUser extends User {
@@ -18,25 +17,46 @@ public class RegisteredUser extends User {
 	private RegisteredUserAccount rUAccount;
 	private double annualFee = 20.00;
 	
+	/**
+	 * The commented lines in this constructor are for testing purposes
+	 */
+	public RegisteredUser(String[] accountData) {
+		setEServ(new EmailServer());
+		setRUController(new RUserAccountController());
+//		for(RegisteredUserAccount account :getRUController().getRegisteredUsersList()) {
+//			System.out.println(account);
+//		}
+		RegisteredUserAccount newAccount = getRUController().buildNewAccount(accountData);
+		getRUController().addNewUserAccount(newAccount);
+		setRUAccount(newAccount);
+//		for(RegisteredUserAccount account :getRUController().getRegisteredUsersList()) {
+//			System.out.println(account);
+//		}
+	}
+	
 	public RegisteredUser(String email, String password) {
 		setEServ(new EmailServer());
 		setRUController(new RUserAccountController());
-		setRUAccount(login(email, password));
+		setRUAccount(login(email,password));
 	}
 	
 	public RegisteredUserAccount login(String email, String password) {
-		return rUController.queryLogin(email, password);
+
+		for(RegisteredUserAccount account : getRUController().getRegisteredUsers()) {
+			if(email.equals(account.getEmailAddress()) && password.equals(account.getPassword())) {
+				return account;
+			}
+		}
+		return null;
 	}
 	
-	// ENTERPAYMENT() METHOD IN RESERVATION CLASS NEEDS TO TAKE A CREDIT CARD INTEGER VALUE, NOT STRING
 	public void makePayment() {
-		this.getUserReservation().enterPayment(Integer.toString(getRUAccount().getCreditCard()), getRUAccount().getExpiry(), this.getReservationPrice());
+		this.getUserReservation().enterPayment(getRUAccount().getCreditCard(), getRUAccount().getExpiry(), this.getReservationPrice());
 	}
 	
 	public void makeReservation() {
 		this.setUserReservation(new Reservation());
 		this.getUserReservation().buildTickets(getRUAccount().getEmailAddress(), userSelectedTheatre, userSelectedMovie, userSelectedShowtime, userSelectedSeats);
-		System.out.println("TESTING: registered user has purchased a ticket");
 		System.out.println(getEServ().sendMoviePaymentConfirmation());
 	}
 	
@@ -45,7 +65,7 @@ public class RegisteredUser extends User {
 	}
 	
 	public void confirmCancellation() {
-		this.getMcc().confirmCancellation(getRUAccount().getEmailAddress(), Integer.toString(getRUAccount().getCreditCard()), getRUAccount().getExpiry(), this.getReservationPrice());
+		this.getMcc().confirmCancellation(getRUAccount().getEmailAddress(), getRUAccount().getCreditCard(), getRUAccount().getExpiry(), this.getReservationPrice());
 		System.out.println(getEServ().sendRefundConfirmation());
 	}
 	
@@ -78,30 +98,31 @@ public class RegisteredUser extends User {
 		this.rUAccount = rUAccount;
 	}
 	
-	//************ALL BELOW IS FOR TESTING**************//
-	public static void main(String[] args) {
-		RegisteredUser user = new RegisteredUser("jsmith@fake.com", "pass123");
-		user.userSelection(1);
-		user.makeReservation();
-		user.makePayment();
-		user.confirmPayment();
-		
-		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
-			System.out.println(p);
-		
-		for (Ticket t: StoreTickets.getTickets())
-			System.out.println(t);
-		
-		user.makeCancellation();
-		user.confirmCancellation();
-		
-		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
-			System.out.println(p);
-		
-		for (Ticket t: StoreTickets.getTickets())
-			System.out.println(t);
-		
-		user.payFee();
-		System.out.println("Done");
-	}
+//	************ALL BELOW IS FOR TESTING**************//
+//	public static void main(String[] args) {
+//		String[] newData = {"Jimbo", "Jones", "85 Balls Ave", "jjones@fake.com", "pass123", "648315", "1/1/21"};
+//		RegisteredUser user = new RegisteredUser(newData);
+//		user.userSelection(1);
+//		user.makeReservation();
+//		user.makePayment();
+//		user.confirmPayment();
+//		
+//		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
+//			System.out.println(p);
+//		
+//		for (Ticket t: StoreTickets.getTickets())
+//			System.out.println(t);
+//		
+//		user.makeCancellation();
+//		user.confirmCancellation();
+//		
+//		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
+//			System.out.println(p);
+//		
+//		for (Ticket t: StoreTickets.getTickets())
+//			System.out.println(t);
+//		
+//		user.payFee();
+//		System.out.println("Done");
+//	}
 }

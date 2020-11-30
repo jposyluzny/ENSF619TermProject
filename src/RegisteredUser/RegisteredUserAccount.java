@@ -3,10 +3,11 @@ package RegisteredUser;
 public class RegisteredUserAccount {
 
 	private String firstName, lastName, address, email, password, expiry;
-	private int userId, creditCard;
+	private int userId;
+	String creditCard;
 	
 	
-	public RegisteredUserAccount(int userId, String firstName, String lastName, String address, String email, String password, int creditCard, String expiry) {
+	public RegisteredUserAccount(int userId, String firstName, String lastName, String address, String email, String password, String creditCard, String expiry) {
 		this.setUserId(userId);
 		this.setFirstName(firstName);
 		this.setLastName(lastName);
@@ -41,11 +42,11 @@ public class RegisteredUserAccount {
 		this.address = address;
 	}
 	
-	public int getCreditCard() {
+	public String getCreditCard() {
 		return creditCard;
 	}
 	
-	public void setCreditCard(int creditCard) {
+	public void setCreditCard(String creditCard) {
 		this.creditCard = creditCard;
 	}
 	

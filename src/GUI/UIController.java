@@ -324,7 +324,9 @@ public class UIController {
 			    		PaymentUI payment = new PaymentUI();
 			    		ArrayList<String> paymentInfo = payment.paymentInfoDialog(2,20,1);
 			    		
-			    		RegisteredUser newAccount = new RegisteredUser(newEmail,newPassword);
+			    		String[] accountData = {newName.split(" ")[0], newName.split(" ")[1], newAddress, newEmail, newPassword, newCredit, newExpiry};
+			    		
+			    		RegisteredUser newAccount = new RegisteredUser(accountData);
 			    		
 				    	accountView.displayRegisterMessage();
 		    		}
@@ -336,7 +338,7 @@ public class UIController {
 		    			acc.setAddress(newAddress);
 		    			acc.setEmailAddress(newEmail);
 		    			acc.setPassword(newPassword);
-		    			acc.setCreditCard(Integer.valueOf(newCredit));
+		    			acc.setCreditCard(newCredit);
 		    			acc.setExpiry(newExpiry);
 		    			
 		    			accountView.displayUpdateMessage();

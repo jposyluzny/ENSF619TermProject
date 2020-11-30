@@ -68,12 +68,12 @@ public class AccountUI extends JPanel {
 	    return panel;
 	}
 
-	public void setFields(String name, String addr, String email, String pass, int cred, String expr) {
+	public void setFields(String name, String addr, String email, String pass, String string, String expr) {
 		nameInput.setText(name);
 		addressInput.setText(addr);
 		emailInput.setText(email);
 		passwordInput.setText(pass);
-		creditInput.setText(""+cred);
+		creditInput.setText(""+string);
 		expiryInput.setText(expr);
 	}
 	

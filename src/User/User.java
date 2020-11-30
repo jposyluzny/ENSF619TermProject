@@ -150,32 +150,32 @@ public class User {
 		this.reservationPrice = reservationPrice;
 	}
 
-	public static void main(String[] args) {
-		User user = new User();
-		
-		//THIS IS ALL FOR TESTING ***************************************************
-		user.userSelection(1);
-		user.makeReservation("jimboBimbus@yahoo.com");
-		user.makePayment("1234 5678 9874 12", "03-22");
-		user.confirmPayment();
-		
-		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
-			System.out.println(p);
-		
-		for (Ticket t: StoreTickets.getTickets())
-			System.out.println(t);
-		
-		user.makeCancellation("jimboBimbus@yahoo.com");
-		user.confirmCancellation("jimboBimbus@yahoo.com", "1234-3425-23425-12", "04-22");
-		
-		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
-			System.out.println(p);
-		
-		for (Ticket t: StoreTickets.getTickets())
-			System.out.println(t);
-		
-		System.out.println("Done");
-	}
+//	public static void main(String[] args) {
+//		User user = new User();
+//		
+//		//THIS IS ALL FOR TESTING ***************************************************
+//		user.userSelection(1);
+//		user.makeReservation("jimboBimbus@yahoo.com");
+//		user.makePayment("1234 5678 9874 12", "03-22");
+//		user.confirmPayment();
+//		
+//		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
+//			System.out.println(p);
+//		
+//		for (Ticket t: StoreTickets.getTickets())
+//			System.out.println(t);
+//		
+//		user.makeCancellation("jimboBimbus@yahoo.com");
+//		user.confirmCancellation("jimboBimbus@yahoo.com", "1234-3425-23425-12", "04-22");
+//		
+//		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
+//			System.out.println(p);
+//		
+//		for (Ticket t: StoreTickets.getTickets())
+//			System.out.println(t);
+//		
+//		System.out.println("Done");
+//	}
 
 
 }
