@@ -13,6 +13,7 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
+import RegisteredUser.RUserAccountController;
 import RegisteredUser.RegisteredUser;
 import RegisteredUser.RegisteredUserAccount;
 import Reservation.Ticket;
@@ -310,38 +311,55 @@ public class UIController {
 		//Action 11: User makes a new account or updates their existing information
 		accountView.getMakeAccountButton().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String newName = accountView.getNameInput().getText();
+				String newFirstName = accountView.getFirstNameInput().getText();
+				String newLastName = accountView.getLastNameInput().getText();
 				String newAddress = accountView.getAddressInput().getText();
 		    	String newEmail = accountView.getEmailInput().getText();
 		    	String newPassword = accountView.getPasswordInput().getText();
 		    	String newCredit = accountView.getCreditInput().getText();
 		    	String newExpiry = accountView.getExpiryInput().getText();
 		    	
-		    	if(!newName.equals("") && !newAddress.equals("") && !newEmail.equals("") 
+
+	    		
+		    	if(!newFirstName.equals("") && !newLastName.equals("") && !newAddress.equals("") && !newEmail.equals("") 
 		    			&& !newPassword.equals("") && !newCredit.equals("")) {
 		    		
-		    		if(userType==1) {
-			    		PaymentUI payment = new PaymentUI();
-			    		ArrayList<String> paymentInfo = payment.paymentInfoDialog(2,20,1);
-			    		
-			    		String[] accountData = {newName.split(" ")[0], newName.split(" ")[1], newAddress, newEmail, newPassword, newCredit, newExpiry};
-			    		
+		    		String[] accountData = {newFirstName, newLastName, newAddress, newEmail, 
+							newPassword, newCredit, newExpiry};
+
+		    		if(userType==1) {		    				    					    		
 			    		RegisteredUser newAccount = new RegisteredUser(accountData);
 			    		
-				    	accountView.displayRegisterMessage();
+			    		if(newAccount.getRUAccount() == null) {
+			    			accountView.displayErrorMessage(newAccount.getRUController().checkNewAccountData(accountData));
+			    		} 	
+			    		
+			    		else {
+				    		PaymentUI payment = new PaymentUI();
+				    		ArrayList<String> paymentInfo = payment.paymentInfoDialog(2,20,1);
+			    			accountView.displayRegisterMessage();
+			    		}
 		    		}
 		    		
 		    		else if(userType==2){
 		    			RegisteredUserAccount acc = ((RegisteredUser) user).getRUAccount();
-		    			acc.setFirstName(newName.split(" ")[0]);
-		    			acc.setLastName(newName.split(" ")[1]);
-		    			acc.setAddress(newAddress);
-		    			acc.setEmailAddress(newEmail);
-		    			acc.setPassword(newPassword);
-		    			acc.setCreditCard(newCredit);
-		    			acc.setExpiry(newExpiry);
+		    			RUserAccountController controller = ((RegisteredUser) user).getRUController();
+		    			if(controller.checkExistingAccountData(accountData).equals("Information is correct!")) {
+			    			acc.setFirstName(newFirstName);
+			    			acc.setLastName(newLastName);
+			    			acc.setAddress(newAddress);
+			    			acc.setEmailAddress(newEmail);
+			    			acc.setPassword(newPassword);
+			    			acc.setCreditCard(newCredit);
+			    			acc.setExpiry(newExpiry);
+			    			
+			    			accountView.displayUpdateMessage();
+		    			}
 		    			
-		    			accountView.displayUpdateMessage();
+		    			else {
+		    				accountView.displayErrorMessage(controller.checkExistingAccountData(accountData));
+		    			}
+		    			
 		    		}
 		    	}
 		    }

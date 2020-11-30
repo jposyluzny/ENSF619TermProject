@@ -21,7 +21,8 @@ public class AccountUI extends JPanel {
 	private JTextField emailInput = new JTextField(12);
 	private JTextField passwordInput = new JTextField(12);
 	private JTextField creditInput = new JTextField(12);
-	private JTextField nameInput = new JTextField(12);
+	private JTextField firstNameInput = new JTextField(12);
+	private JTextField lastNameInput = new JTextField(12);
 	private JTextField addressInput = new JTextField(12);
 	private JTextField expiryInput = new JTextField(12);
 	
@@ -43,18 +44,20 @@ public class AccountUI extends JPanel {
 		gbc.gridy = 0;
 
 		gbc.gridy = 1;
-		innerPanel.add(formatLabelAndInput("Name   ",nameInput),gbc);
+		innerPanel.add(formatLabelAndInput("First Name   ",firstNameInput),gbc);
 		gbc.gridy = 2;
-		innerPanel.add(formatLabelAndInput("Address   ",addressInput),gbc);
+		innerPanel.add(formatLabelAndInput("Last Name   ",lastNameInput),gbc);
 		gbc.gridy = 3;
-		innerPanel.add(formatLabelAndInput("Email   ",emailInput),gbc);
+		innerPanel.add(formatLabelAndInput("Address   ",addressInput),gbc);
 		gbc.gridy = 4;
-		innerPanel.add(formatLabelAndInput("Password   ",passwordInput),gbc);
+		innerPanel.add(formatLabelAndInput("Email   ",emailInput),gbc);
 		gbc.gridy = 5;
-		innerPanel.add(formatLabelAndInput("Credit   ",creditInput),gbc);
+		innerPanel.add(formatLabelAndInput("Password   ",passwordInput),gbc);
 		gbc.gridy = 6;
-		innerPanel.add(formatLabelAndInput("Expiry   ",expiryInput),gbc);
+		innerPanel.add(formatLabelAndInput("Credit   ",creditInput),gbc);
 		gbc.gridy = 7;
+		innerPanel.add(formatLabelAndInput("Expiry   ",expiryInput),gbc);
+		gbc.gridy = 8;
 		innerPanel.add(makeAccountButton,gbc);
 		
 		this.add(innerPanel, BorderLayout.SOUTH);
@@ -69,7 +72,8 @@ public class AccountUI extends JPanel {
 	}
 
 	public void setFields(String name, String addr, String email, String pass, String string, String expr) {
-		nameInput.setText(name);
+		firstNameInput.setText(name.split(" ")[0]);
+		lastNameInput.setText(name.split(" ")[1]);
 		addressInput.setText(addr);
 		emailInput.setText(email);
 		passwordInput.setText(pass);
@@ -85,7 +89,9 @@ public class AccountUI extends JPanel {
 		JOptionPane.showMessageDialog(null, "Successfully registered account");
 	}
 
-	
+	public void displayErrorMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
 	
 	public JButton getMakeAccountButton() {
 		return makeAccountButton;
@@ -103,10 +109,14 @@ public class AccountUI extends JPanel {
 		return creditInput;
 	}
 
-	public JTextField getNameInput() {
-		return nameInput;
+	public JTextField getFirstNameInput() {
+		return firstNameInput;
 	}
 
+	public JTextField getLastNameInput() {
+		return lastNameInput;
+	}
+	
 	public JTextField getAddressInput() {
 		return addressInput;
 	}

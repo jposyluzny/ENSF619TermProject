@@ -1,12 +1,25 @@
 package RegisteredUser;
 
+/**
+ * This class holds all of the information associated with a Registered User.
+ */
 public class RegisteredUserAccount {
 
 	private String firstName, lastName, address, email, password, expiry;
 	private int userId;
 	String creditCard;
 	
-	
+	/**
+	 * This constructor builds a new RegisteredUserAccount object with all of the required input parameters.
+	 * @param userId is the unique ID number of the new user
+	 * @param firstName is the first name of the new user
+	 * @param lastName is the last name of the new user
+	 * @param address is the address of the new user
+	 * @param email is the email address of the new user
+	 * @param password is the password of the new user
+	 * @param creditCard is the credit card of the new user
+	 * @param expiry is the expiry date of the new user's credit card
+	 */
 	public RegisteredUserAccount(int userId, String firstName, String lastName, String address, String email, String password, String creditCard, String expiry) {
 		this.setUserId(userId);
 		this.setFirstName(firstName);
