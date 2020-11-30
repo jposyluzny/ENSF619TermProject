@@ -13,6 +13,8 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 
+import RegisteredUser.RegisteredUser;
+import RegisteredUser.RegisteredUserAccount;
 import Reservation.Ticket;
 import Theatre.Movie;
 import Theatre.Theatre;
@@ -43,13 +45,30 @@ public class UIController {
 		accountView = app.getAccountView();
 		user = u;
 		
+		if(u instanceof RegisteredUser) {
+			userType=2;
+			RegisteredUserAccount ruAcc = ((RegisteredUser)user).getRUAccount();
+			
+			accountView.setFields(ruAcc.getFirstName()+" "+ruAcc.getLastName(), ruAcc.getAddress(), 
+					ruAcc.getEmailAddress(), ruAcc.getPassword(), ruAcc.getCreditCard(), ruAcc.getExpiry());
+			
+			cancelView.setEmailField(ruAcc.getEmailAddress());
+		}
+		
+		
 		addMovieViewListeners();
 		addSeatViewListeners();
 		addCancelViewListeners();
-		addAccountViewListeners();
-		
-		userType = app.getUserType();
-		
+		addAccountViewListeners();			
+	}
+	
+	public void runApp(Login login) {
+		if(login.getUserType()==1){
+			app.makeOrdinaryGUI();
+		}
+		else if(login.getUserType()==2) {
+			app.makeRegisteredGUI(login.getEmailAddress());
+		}
 	}
 	
 	//this method adds all action listeners to movie-browsing panel
@@ -180,6 +199,15 @@ public class UIController {
 		}
 	}
 
+	private void resetDisplays() {
+		movieView.clearDisplay();
+		seatView.clearDisplay();
+		
+		user.setUserSelectedMovie(null);
+		user.setUserSelectedTheatre(null);
+		user.setUserSelectedShowtime(null);
+		user.getUserSelectedSeats().clear();
+	}
 	
 	private void addSeatViewListeners() {
 		//Action 6: Adds action listener to seat buttons in diagram
@@ -190,7 +218,8 @@ public class UIController {
 			public void actionPerformed(ActionEvent e) {
 				user.getUserSelectedSeats().clear();
 				
-				if(selectedSeatNumbers.isEmpty()==false) {
+				if(user.getUserSelectedMovie()!=null && user.getUserSelectedTheatre()!=null
+						&& user.getUserSelectedShowtime()!=null && selectedSeatNumbers.isEmpty()==false) {
 					for(int i:selectedSeatNumbers) {
 						for(Seat s:user.getUserSelectedShowtime().getSeats()) {
 							if(s.getSeatNumber()==i) {
@@ -203,15 +232,25 @@ public class UIController {
 					user.calculateReservationPrice(user.getUserSelectedSeats());
 					ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,user.getReservationPrice(),1);
 					
-					if(paymentInfo.isEmpty()==false) {
+					if(paymentInfo.isEmpty()==false && userType==1) {
 						//To reserve ticket, create reservation object
+						boolean hasVoucher = user.findVoucher(paymentInfo.get(0));
+						if(hasVoucher==true) {
+							paymentView.displayVoucherAppliedMessage();
+						}
 						user.makeReservation(paymentInfo.get(0));
 						user.makePayment(paymentInfo.get(1), paymentInfo.get(2));
 						user.confirmPayment();
+						resetDisplays();
+
 					}
 					
-					movieView.clearDisplay();
-					seatView.clearDisplay();
+					else if(userType==2) { //registered user reserving a ticket
+						((RegisteredUser)user).makeReservation(); //explicitly down-casting to registered user 
+						((RegisteredUser)user).makePayment();
+						((RegisteredUser)user).confirmPayment();
+						resetDisplays();
+					}
 				}
 		    }
 		});
@@ -242,8 +281,18 @@ public class UIController {
 		//Action 9: User cancels their reservation
 		cancelView.getCancelButton().addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
-		    	ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,user.getReservationPrice()*0.85,2); //not 100% sure if i need this 85% here
-	    		user.confirmCancellation(paymentInfo.get(0), paymentInfo.get(1), paymentInfo.get(2));
+		    	int numberOfReservations = user.makeCancellation(cancelView.getEmailInput().getText()).size();
+		    	if(userType==1) {
+		    		ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,numberOfReservations*12*0.85,2); //not 100% sure if i need this 85% here
+		    		if(paymentInfo.isEmpty()==false) {
+		    			user.confirmCancellation(paymentInfo.get(0), paymentInfo.get(1), paymentInfo.get(2));
+		    		}
+		    	}
+		    	else if(userType==2) {
+		    		ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,numberOfReservations, 2);
+		    		((RegisteredUser)user).confirmCancellation();
+		    	}
+		    	
 	    		cancelView.clearDisplay();
 		    }
 		});
@@ -253,8 +302,8 @@ public class UIController {
 		//Action 10: Registered user pays annual fee
 		app.getButton5().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,20,1);
-//				System.out.println("Payment from user: "+paymentInfo.get(0)+" & "+paymentInfo.get(1)+" & "+paymentInfo.get(2));	
+				ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,20.00,1);
+				((RegisteredUser)user).payFee();
 		    }
 		});
 		
@@ -266,6 +315,7 @@ public class UIController {
 		    	String newEmail = accountView.getEmailInput().getText();
 		    	String newPassword = accountView.getPasswordInput().getText();
 		    	String newCredit = accountView.getCreditInput().getText();
+		    	String newExpiry = accountView.getExpiryInput().getText();
 		    	
 		    	if(!newName.equals("") && !newAddress.equals("") && !newEmail.equals("") 
 		    			&& !newPassword.equals("") && !newCredit.equals("")) {
@@ -274,9 +324,21 @@ public class UIController {
 			    		PaymentUI payment = new PaymentUI();
 			    		ArrayList<String> paymentInfo = payment.paymentInfoDialog(2,20,1);
 			    		
+			    		RegisteredUser newAccount = new RegisteredUser(newEmail,newPassword);
+			    		
 				    	accountView.displayRegisterMessage();
 		    		}
-		    		else {
+		    		
+		    		else if(userType==2){
+		    			RegisteredUserAccount acc = ((RegisteredUser) user).getRUAccount();
+		    			acc.setFirstName(newName.split(" ")[0]);
+		    			acc.setLastName(newName.split(" ")[1]);
+		    			acc.setAddress(newAddress);
+		    			acc.setEmailAddress(newEmail);
+		    			acc.setPassword(newPassword);
+		    			acc.setCreditCard(Integer.valueOf(newCredit));
+		    			acc.setExpiry(newExpiry);
+		    			
 		    			accountView.displayUpdateMessage();
 		    		}
 		    	}

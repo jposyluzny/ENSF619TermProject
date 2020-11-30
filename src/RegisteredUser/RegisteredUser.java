@@ -35,9 +35,8 @@ public class RegisteredUser extends User {
 	
 	public void makeReservation() {
 		this.setUserReservation(new Reservation());
-		ArrayList<Seat> s = this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0).getSeats();
-		this.calculateReservationPrice(s);
-		this.getUserReservation().buildTickets(getRUAccount().getEmailAddress(), this.getUserSelectedMovie().getTheatres().get(0), this.getUserSelectedMovie(), this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0), s);
+		this.getUserReservation().buildTickets(getRUAccount().getEmailAddress(), userSelectedTheatre, userSelectedMovie, userSelectedShowtime, userSelectedSeats);
+		System.out.println("TESTING: registered user has purchased a ticket");
 		System.out.println(getEServ().sendMoviePaymentConfirmation());
 	}
 	

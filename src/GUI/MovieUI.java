@@ -31,31 +31,27 @@ public class MovieUI extends JFrame {
 	
 	//user type
 	int userType=1; //1 is guest, 2 is registered
-	String email;
 	
-	public MovieUI(BrowseMoviesUI mV, BrowseSeatUI sV,CancellationUI cV, AccountUI aV, PaymentUI pV) {
+	public MovieUI(BrowseMoviesUI mV, BrowseSeatUI sV,CancellationUI cV, AccountUI aV, PaymentUI pV, int i) {
 		movieView = mV;
 		seatView = sV;
 		cancelView = cV;
 		accountView = aV;
 		paymentView = pV;
+		userType=i;
 	}
 	
-
-	public void createGUI() {
-		Login login = new Login();
-		userType = login.getUserType();
-		email = login.getEmailAddress();
-		if(userType==1) {
-			makeOrdinaryUserPanel();
-		}
-		else if(userType==2) {
-			makeRegisteredUserPanel(email);
-		}
+	public void makeOrdinaryGUI() {
+		makeOrdinaryUserPanel();
 		setUpGUI();
 	}
 	
-	private void setUpGUI() {
+	public void makeRegisteredGUI(String email) {
+		makeRegisteredUserPanel(email);
+		setUpGUI();
+	}
+	
+	public void setUpGUI() {
 	    //Sets up the left and right halves of the GUI
 		rightPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
 		this.setLayout(new GridLayout(1,2));
@@ -117,25 +113,18 @@ public class MovieUI extends JFrame {
 	}
 	
 	private void createCancelTicketPanel() {
-		cancelView.setEmailField(email);
 		cancelTicketPanel.add(cancelView);
+	}
+	
+	private void createUpdatePanel() {
+		accountView.getMakeAccountButton().setText("Update Account");
+		accountPanel.add(accountView);
 	}
 	
 	private void createAccountPanel() {
 		accountPanel.add(accountView);
 	}
 	
-	private void createUpdatePanel() {
-		accountView.getMakeAccountButton().setText("Update Account");
-		accountView.getNameInput().setText("Placeholder name");
-		accountView.getAddressInput().setText("Placeholder address");
-		accountView.getEmailInput().setText(email);
-		accountView.getPasswordInput().setText("Placeholder password");
-		accountView.getCreditInput().setText("Placeholder credit");
-		
-		accountPanel.add(accountView);
-	}
-
 	private void addButtonListeners() {
 		//button1
 		button1.addActionListener(new ActionListener() {
@@ -201,9 +190,6 @@ public class MovieUI extends JFrame {
 	}
 	public PaymentUI getPaymentView() {
 		return paymentView;
-	}
-	public int getUserType() {
-		return userType;
 	}
 	public JButton getButton5() {
 		return button5;

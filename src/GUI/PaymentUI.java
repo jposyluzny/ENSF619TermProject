@@ -113,5 +113,8 @@ public class PaymentUI {
 	public void displayErrorMessage() {
 		JOptionPane.showMessageDialog(null, "ERROR: cannot reserve ticket");
 	}
+	public void displayVoucherAppliedMessage() {
+		JOptionPane.showMessageDialog(null, "NOTE: You have a voucher! 15% discount has been automatically applied to your order");
+	}
 
 }

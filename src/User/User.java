@@ -9,12 +9,12 @@ import Payment.*;
 public class User {
 
 	ModelController modelController;
-	Movie userSelectedMovie;
+	protected Movie userSelectedMovie;
 	
 	//additions from branden : for review by team
-	Theatre userSelectedTheatre;
-	Showtime userSelectedShowtime;
-	ArrayList<Seat> userSelectedSeats = new ArrayList<Seat>();
+	protected Theatre userSelectedTheatre;
+	protected Showtime userSelectedShowtime;
+	protected ArrayList<Seat> userSelectedSeats = new ArrayList<Seat>();
 	
 	Reservation userReservation;
 	ManageCancellationController mcc;
@@ -42,8 +42,6 @@ public class User {
 		//branden's edits: for review
 		this.setUserReservation(new Reservation());
 		this.getUserReservation().buildTickets(emailAddress, userSelectedTheatre, userSelectedMovie, userSelectedShowtime, userSelectedSeats);
-		System.out.println("RESERVED A TICKET FOR "+userSelectedTheatre.getName()+
-				userSelectedMovie.getName()+userSelectedShowtime.getDate()+userSelectedSeats);
 		
 //		this.setUserReservation(new Reservation());
 //		ArrayList<Seat> s = this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0).getSeats();
