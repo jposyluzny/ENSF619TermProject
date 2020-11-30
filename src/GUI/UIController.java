@@ -271,10 +271,14 @@ public class UIController {
 		    	if(temp.isEmpty()==false) {
 			    	for(Ticket t:temp) {
 			    		String s = "Ticket "+t.getTicketNumber()+":"+t.getMovie().getName()
-			    				+","+t.getTheatre().getName()+","+t.getShowtime().getDate()+","+t.getShowtime().getTime();
+			    				+","+t.getTheatre().getName()+","+t.getShowtime().getDate()+","+t.getShowtime().getTime()
+			    				+", Seat"+t.getSeat().getSeatNumber();
 			    		DLM.addElement(s);
 			    	}
 			    	cancelView.getEmailList().setModel(DLM);	
+		    	}
+		    	else if(temp.isEmpty()==true) {
+		    		cancelView.displayNoMatchMessage();
 		    	}
 		    }
 		});
@@ -282,19 +286,21 @@ public class UIController {
 		//Action 9: User cancels their reservation
 		cancelView.getCancelButton().addActionListener(new ActionListener() {
 		    public void actionPerformed(ActionEvent arg0) {
-		    	int numberOfReservations = user.makeCancellation(cancelView.getEmailInput().getText()).size();
-		    	if(userType==1) {
-		    		ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,numberOfReservations*12*0.85,2); //not 100% sure if i need this 85% here
-		    		if(paymentInfo.isEmpty()==false) {
-		    			user.confirmCancellation(paymentInfo.get(0), paymentInfo.get(1), paymentInfo.get(2));
-		    		}
+		    	String userEmailInput = cancelView.getEmailInput().getText();
+		    	int numberOfReservations = user.makeCancellation(userEmailInput).size();
+		    	if(numberOfReservations!=0) {
+			    	if(userType==1) {
+			    		ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,numberOfReservations*12*0.85,2); //not 100% sure if i need this 85% here
+			    		if(paymentInfo.isEmpty()==false) {
+			    			user.confirmCancellation(userEmailInput, paymentInfo.get(0), paymentInfo.get(1));
+			    		}
+			    	}
+			    	else if(userType==2) {
+			    		ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,numberOfReservations*12, 2);
+			    		((RegisteredUser)user).confirmCancellation();
+			    	}
+			    	cancelView.clearDisplay();
 		    	}
-		    	else if(userType==2) {
-		    		ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,numberOfReservations, 2);
-		    		((RegisteredUser)user).confirmCancellation();
-		    	}
-		    	
-	    		cancelView.clearDisplay();
 		    }
 		});
 	}
@@ -319,8 +325,6 @@ public class UIController {
 		    	String newCredit = accountView.getCreditInput().getText();
 		    	String newExpiry = accountView.getExpiryInput().getText();
 		    	
-
-	    		
 		    	if(!newFirstName.equals("") && !newLastName.equals("") && !newAddress.equals("") && !newEmail.equals("") 
 		    			&& !newPassword.equals("") && !newCredit.equals("")) {
 		    		
@@ -338,6 +342,30 @@ public class UIController {
 				    		PaymentUI payment = new PaymentUI();
 				    		ArrayList<String> paymentInfo = payment.paymentInfoDialog(2,20,1);
 			    			accountView.displayRegisterMessage();
+			    			
+			    			app.setVisible(false); 
+			    			
+			    			//re-launch application
+			    			Login loginPrompt = new Login();
+			    			userType = loginPrompt.getUserType();
+			    			
+			    			if(userType==1) {
+			    				app.resetDisplays();
+			    				app.setVisible(true);
+			    			}
+			    			else if(userType==2) {
+			    				
+				    			RegisteredUser newUser = new RegisteredUser(loginPrompt.getEmailAddress(),
+				    					loginPrompt.getPasswordInput());
+				    			
+				    			if(user.getUserSelectedShowtime()!=null) {
+				    				newUser.getUserSelectedShowtime().setSeats(user.getUserSelectedShowtime().getSeats());
+					    			user = newUser;
+				    			}
+				    			
+				    			app.swapUserGUI(loginPrompt);
+				    			app.setVisible(true); 
+			    			}
 			    		}
 		    		}
 		    		

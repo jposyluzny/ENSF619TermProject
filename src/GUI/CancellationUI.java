@@ -72,6 +72,10 @@ public class CancellationUI extends JPanel {
 		DefaultListModel<String> DLM = new DefaultListModel();
 		ticketList.setModel(DLM);
 	}
+	
+	public void displayNoMatchMessage(){
+		JOptionPane.showMessageDialog(null, "No tickets found for this email");
+	}
 
 	public String getCancelledTicketNumber() {
 		return cancelledTicketNumber;

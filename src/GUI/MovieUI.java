@@ -41,6 +41,22 @@ public class MovieUI extends JFrame {
 		userType=i;
 	}
 	
+	public void resetDisplays() {
+		rightPanel.removeAll();
+		rightPanel.revalidate();
+		rightPanel.repaint();
+		cancelView.setEmailField("");
+		accountView.clearInputFields();
+	}
+	
+	public void swapUserGUI(Login login) {
+		leftPanel.removeAll();
+		leftPanel.revalidate();
+		leftPanel.repaint();
+		makeRegisteredUserPanel(login.getEmailAddress());
+		cancelView.setEmailField(login.getEmailAddress());
+		accountView.getMakeAccountButton().setText("Update Account");
+	}
 	public void makeOrdinaryGUI() {
 		makeOrdinaryUserPanel();
 		setUpGUI();

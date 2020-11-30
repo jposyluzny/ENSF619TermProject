@@ -33,15 +33,17 @@ public class PaymentUI {
 			panel = makePaymentWindow(price,chargeType);
 			int pay = JOptionPane.showConfirmDialog(null,panel,"Please enter payment info", JOptionPane.OK_CANCEL_OPTION);
 			if (pay == JOptionPane.OK_OPTION) {
-				result.add(email.getText());
-				result.add(credit.getText());
-				result.add(expiry.getText());
 				
 				if(chargeType==1) {
-					displaySuccessPaymentMessage();
+					result.add(email.getText());
+					result.add(credit.getText());
+					result.add(expiry.getText());
+					displaySuccessPaymentMessage(); //NEED TO CHANGE!!
 				}
-				else {
-					displaySuccessRefundMessage();
+				else if(chargeType==2) {
+					result.add(credit.getText());
+					result.add(expiry.getText());
+					displaySuccessRefundMessage(); //NEED TO CHANGE!!
 				}
 			}
 		}
@@ -53,25 +55,25 @@ public class PaymentUI {
 		return result;
 	}	
 	
+	
 	public JPanel makePaymentWindow(double price, int chargeType) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5,1));
 		String prompt=null;
 		if(chargeType==1) { //chargetype 1 = paying
 			prompt = "Your total is: $";
+			JLabel total = new JLabel(prompt+price);
+			panel.add(total);
+			panel.add(createInputPanel(new JLabel("Email"), email));
 		}
 		else if(chargeType==2) { //chargetype 2 = refund
 			prompt = "Your refund is: $";
+			JLabel total = new JLabel(prompt+price);
+			panel.add(total);
 		}
-		
-		JLabel total = new JLabel(prompt+price);
-		panel.add(total);
-		panel.add(createInputPanel(new JLabel("Email"), email));
+
 		panel.add(createInputPanel(new JLabel("Credit Card"), credit));
 		panel.add(createInputPanel(new JLabel("Expiry Date"), expiry));
-//		if(chargeType==1) {
-//			panel.add(createInputPanel(new JLabel("Coupon code"), voucher));
-//		}
 		
 		return panel;
 	}
@@ -115,6 +117,9 @@ public class PaymentUI {
 	}
 	public void displayVoucherAppliedMessage() {
 		JOptionPane.showMessageDialog(null, "NOTE: You have a voucher! 15% discount has been automatically applied to your order");
+	}
+	public void displayErrorMessage(String message) {
+		JOptionPane.showMessageDialog(null, message);
 	}
 
 }

@@ -81,12 +81,22 @@ public class AccountUI extends JPanel {
 		expiryInput.setText(expr);
 	}
 	
+	public void clearInputFields() {
+		firstNameInput.setText("");
+		lastNameInput.setText("");
+		addressInput.setText("");
+		emailInput.setText("");
+		passwordInput.setText("");
+		creditInput.setText("");
+		expiryInput.setText("");
+	}
+	
 	public void displayUpdateMessage() {
 		JOptionPane.showMessageDialog(null, "User information updated");
 	}
 	
 	public void displayRegisterMessage() {
-		JOptionPane.showMessageDialog(null, "Successfully registered account");
+		JOptionPane.showMessageDialog(null, "Successfully registered account. Please login to your new account.");
 	}
 
 	public void displayErrorMessage(String message) {
