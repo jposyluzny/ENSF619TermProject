@@ -12,16 +12,28 @@ public class Seat {
         this.isOccupied = isOccupied;
     }
 
-    public int getSeatNumber() {
-        return seatNumber;
-    }
+	public int getSeatNumber() {
+		return seatNumber;
+	}
 
-    public int getShowid() {
-        return showid;
-    }
+	public void setSeatNumber(int seatNumber) {
+		this.seatNumber = seatNumber;
+	}
 
-    public boolean isOccupied() {
-        return isOccupied;
-    }
+	public int getShowid() {
+		return showid;
+	}
+
+	public void setShowid(int showid) {
+		this.showid = showid;
+	}
+
+	public boolean isOccupied() {
+		return isOccupied;
+	}
+
+	public void setOccupied(boolean isOccupied) {
+		this.isOccupied = isOccupied;
+	}
 
 }

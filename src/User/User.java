@@ -4,62 +4,83 @@ import java.util.ArrayList;
 
 import Theatre.*;
 import Reservation.*;
-import Payment.*;
 
+//TODO: How to integrate emailServer into this class, or can we just remove that class since we are replicating this with
+//GUI pop up windows in lieu of an actual email server.
+
+/**
+ * This class will serve to function as storing the Users selections, and calling the proper logic from other classes to 
+ * handle the Users requests.
+ */
 public class User {
 
-	ModelController modelController;
+	protected ModelController modelController;
 	protected Movie userSelectedMovie;
-	
-	//additions from branden : for review by team
 	protected Theatre userSelectedTheatre;
 	protected Showtime userSelectedShowtime;
-	protected ArrayList<Seat> userSelectedSeats = new ArrayList<Seat>();
-	
-	Reservation userReservation;
-	ManageCancellationController mcc;
-	double reservationPrice;
+	protected ArrayList<Seat> userSelectedSeats;
+	protected Reservation userReservation;
+	protected ManageCancellationController mcc;
+	protected double reservationPrice;
 
+	/**
+	 * This constructor will instantiate and set a new modelController class that the user will "use" to choose the movie, theatre,
+	 * showtime, and seat objects they would like to make a reservation for. It will also instantiate the ArrayList holding all of
+	 * the selected Seat objects.
+	 */
 	public User(){
-		modelController = new ModelController();
-		this.setMcc(new ManageCancellationController());
+		this.setModelController(new ModelController());
+		this.setUserSelectedSeats(new ArrayList<Seat> ());
 	}
 	
-	//This is for testing fetching the objects from Ryans Theatre segment of this app --> branden: for review: can get rid of this
-	public void userSelection(int movieID) {
-		this.setUserSelectedMovie(this.modelController.getMovieById(movieID));
-	}
-	
+	/**
+	 * This method will calculate the price of the reservation the User is to make. It will calculate this price by counting the
+	 * number of seats selected by the User as the User must purchase a ticket for each Seat they want to reserve.
+	 * This method assumes that each Ticket will cost 12 dollars.
+	 * @param s is the list of Seat objects the user has selected to reserve.
+	 */
 	public void calculateReservationPrice(ArrayList<Seat> s) {
-		reservationPrice=0; //reset to 0 every time we want to re-calculate
+		if (s == null)
+			return;
+		this.setReservationPrice(0);
 		for (Seat seat: s)
 			this.reservationPrice = this.reservationPrice + 12;
 	}
 	
-	//This is for making a reservation
-	//TESTING
+	/**
+	 * This will create a new Reservation object, and set it for the User. It will then call the method in the Reservation class
+	 * to create tickets based on the users selections.
+	 * @param emailAddress is the email address of the user.
+	 */
 	public void makeReservation(String emailAddress) {
-		//branden's edits: for review
 		this.setUserReservation(new Reservation());
 		this.getUserReservation().buildTickets(emailAddress, userSelectedTheatre, userSelectedMovie, userSelectedShowtime, userSelectedSeats);
-		
-//		this.setUserReservation(new Reservation());
-//		ArrayList<Seat> s = this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0).getSeats();
-//		this.calculateReservationPrice(s);
-//		this.getUserReservation().buildTickets(emailAddress, this.getUserSelectedMovie().getTheatres().get(0), this.getUserSelectedMovie(), this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0), s);
 	}
 	
+	/**
+	 * This will pass the users payment information along to the reservation class.
+	 * @param creditCard is the users credit card number.
+	 * @param description is the users credit card expiry date.
+	 */
 	public void makePayment(String creditCard, String description) {
 		this.getUserReservation().enterPayment(creditCard, description, this.getReservationPrice());
 	}
 	
-	//"Processes and sends the payment to the financial institution
+	/**
+	 * This will "tell" the Reservation class to send the users payment information to the Financial Institution class to be stored.
+	 * This will simulate confirming the payment and processing the users money to the Bank.
+	 */
 	public void confirmPayment() {
 		this.getUserReservation().confirmPayment();
 	}
 	
-	//This will return false if there are No vouchers associated with the users email address. It will return true if
-	//there is a voucher.
+	/**
+	 * This method will check the stored discount vouchers to see if the user trying to make a reservation has any current vouchers
+	 * that can be applied to their checkout.
+	 * @param emailAddress is the users entered email address.
+	 * @return is a boolean that will return false if there are no vouchers associated with the users email address. It will 
+	 * return true if there is a voucher.
+	 */
 	public boolean findVoucher(String emailAddress) {
 		Voucher v = this.getModelController().findVoucher(emailAddress);
 		if (v == null)
@@ -70,18 +91,34 @@ public class User {
 		}
 	}
 	
-	//This will apply a 15% discount to the reservation price.
+	/**
+	 * This will apply the voucher to the reservation price by decreasing the reservation amount by 15%. It will then remove 
+	 * the voucher from the storage location so the Voucher cannot be used more than once.
+	 * @param v is the Voucher object being used.
+	 */
 	public void applyVoucherDiscount(Voucher v) {
 		this.setReservationPrice(this.getReservationPrice()*0.85);
 		this.getModelController().removeVoucher(v);
 	}
 	
-	//Returns all tickets associated with a cancellation
+	/**
+	 * This will create a new instance of a ManageCancellationController to be used by the User to make a Cancellation. It will
+	 * then call the makeCancellation methods in the ManageCancellationController class and pass along the users email address.
+	 * @param emailAddress is the users email address.
+	 * @return is the list of all the users tickets that have been reserved with that email address.
+	 */
 	public ArrayList<Ticket> makeCancellation(String emailAddress) {
+		this.setMcc(new ManageCancellationController());
 		return this.getMcc().makeCancellation(emailAddress);
 	}
 	
-	//"Processes and sends the cancellation to the financial institution
+	/**
+	 * This will process the users entered refund information and send the information to the Financial Institution to be stored.
+	 * This will simulate sending a refund to the Bank.
+	 * @param emailAddress is the users entered email address.
+	 * @param creditCard is the users entered credit card number.
+	 * @param description is the users credit card expiry date.
+	 */
 	public void confirmCancellation(String emailAddress, String creditCard, String description) {
 		this.getMcc().confirmCancellation(emailAddress, creditCard, description, this.getReservationPrice());
 	}
@@ -149,33 +186,5 @@ public class User {
 	public void setReservationPrice(double reservationPrice) {
 		this.reservationPrice = reservationPrice;
 	}
-
-//	public static void main(String[] args) {
-//		User user = new User();
-//		
-//		//THIS IS ALL FOR TESTING ***************************************************
-//		user.userSelection(1);
-//		user.makeReservation("jimboBimbus@yahoo.com");
-//		user.makePayment("1234 5678 9874 12", "03-22");
-//		user.confirmPayment();
-//		
-//		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
-//			System.out.println(p);
-//		
-//		for (Ticket t: StoreTickets.getTickets())
-//			System.out.println(t);
-//		
-//		user.makeCancellation("jimboBimbus@yahoo.com");
-//		user.confirmCancellation("jimboBimbus@yahoo.com", "1234-3425-23425-12", "04-22");
-//		
-//		for (PaymentInfo p: FinancialInstitution.getPaymentRecords())
-//			System.out.println(p);
-//		
-//		for (Ticket t: StoreTickets.getTickets())
-//			System.out.println(t);
-//		
-//		System.out.println("Done");
-//	}
-
-
+	
 }

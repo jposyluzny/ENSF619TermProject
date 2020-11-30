@@ -121,7 +121,7 @@ public class ModelController {
     }
 
     // Call this once to setup database
-    private static void populateDBwithSeats(){
+    public static void populateDBwithSeats(){
         ModelController a = new ModelController();
         ArrayList<Movie> b = a.getMovies();
         a.seatDBController.populateInitialDBSeats(b);
@@ -138,7 +138,7 @@ public class ModelController {
     }
 
     public ArrayList<Movie> getMovieList(){
-        return getMovieList();
+        return movies;
     }
     
 	public ArrayList<Voucher> getVouchers() {

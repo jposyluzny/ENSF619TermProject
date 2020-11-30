@@ -98,7 +98,7 @@ public class UIController {
 				if(e.getClickCount()==1) {
 					try {
 						String movieName = movieView.getSearchList().getSelectedValue();
-						for(Movie m:user.getModelController().getMovies()) {
+						for(Movie m:user.getModelController().getMovieList()) {
 							if(m.getName().equals(movieName)) {
 								user.setUserSelectedMovie(m);
 							}
@@ -155,7 +155,7 @@ public class UIController {
 			public void actionPerformed(ActionEvent e) {
 		    	if(!(user.getUserSelectedMovie()==null) && !(user.getUserSelectedTheatre()==null) && !(user.getUserSelectedShowtime()==null)) {
 		    		selectedSeatNumbers.clear(); //user has selected a new movie, so clear any previous selections
-		    		ArrayList<Seat> seatList = user.getUserSelectedShowtime().getSeats();
+		    		ArrayList<Seat> seatList = user.getUserSelectedShowtime().getSeats();	
 		    		JButton[] seats = seatView.getSeats();
 
 		    		for(int i=0;i<20;i++) {

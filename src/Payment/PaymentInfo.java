@@ -1,15 +1,27 @@
 package Payment;
 
-import RegisteredUser.RUserAccountController;
-
+/**
+ * This class will hold all of the Users payment or refund information. It will also handle passing the object along to the 
+ * Financial Institution.
+ */
 public class PaymentInfo {
 	
 	private ProcessPaymentController processPaymentController;
-	private String creditCard, description; //expiration date instead of description
+	
+	//expiration date instead of description
+	private String creditCard, description; 
 	private double amount; 
+	
 	//True will be for payments, false will be for refunds.
 	private boolean type;
 	
+	/**
+	 * Will set all of the users payment information.
+	 * @param creditCard is the users entered credit card information.
+	 * @param description is the users credit card expiry date.
+	 * @param amount is the amount of the refund or payment.
+	 * @param type is the type of the transaction, true is for payments, and false is for refunds.
+	 */
 	public PaymentInfo (String creditCard, String description, double amount, boolean type) {
 		this.setCreditCard(creditCard);
 		this.setDescription(description);
@@ -18,6 +30,9 @@ public class PaymentInfo {
 		this.setProcessPaymentController(new ProcessPaymentController());
 	}
 
+	/**
+	 * THis will pass this object along to the Financial Institution.
+	 */
 	public void confirmPayment() {
 		this.getProcessPaymentController().confirmPayment(this);
 	}

@@ -2,9 +2,11 @@ package Reservation;
 
 import Theatre.*;
 
+/**
+ * This class will hold all of the information associated with the Users selections for a reservation.
+ */
 public class Ticket {
 	
-	//NOTE: I have a Seat object here instead of a primitive seatNumber type (int).
 	private int ticketNumber;
 	private String emailAddress;
 	private Theatre theatre;
@@ -13,6 +15,15 @@ public class Ticket {
 	private Seat seat;
 	private int seatNumber;
 	
+	/**
+	 * This will set all of the ticket reservation attributes for each Ticket.
+	 * @param ticketNumber is the unique ticket number.
+	 * @param emailAddress is the email address the user enters.
+	 * @param theatre is the Theatre object the user has selected.
+	 * @param movie is the Movie object the user has selected.
+	 * @param showtime is the Showtime object the user has selected.
+	 * @param seat is the Seat object the user has selected.
+	 */
 	public Ticket(int ticketNumber, String emailAddress, Theatre theatre, Movie movie, Showtime showtime, Seat seat) {
 		this.setTicketNumber(ticketNumber);
 		this.setEmailAddress(emailAddress);
@@ -20,11 +31,6 @@ public class Ticket {
 		this.setMovie(movie);
 		this.setShowtime(showtime);
 		this.setSeat(seat);
-		storeTickets();
-	}
-	
-	public void storeTickets() {
-		StoreTickets.addTickets(this);
 	}
 	
 	public int getTicketNumber() {

@@ -30,12 +30,12 @@ public class DBController {
     /**
      * Username
      */
-    protected String login = "josh";
+    protected String login = "dbuser";
 
     /**
      * Password
      */
-    protected String password = "password";
+    protected String password = "dbpass";
 
     /**
      * Constructor for DBController.
