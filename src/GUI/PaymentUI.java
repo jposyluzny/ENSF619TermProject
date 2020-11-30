@@ -2,6 +2,8 @@ package GUI;
 
 
 import java.awt.GridLayout;
+import java.util.ArrayList;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -13,42 +15,64 @@ public class PaymentUI {
 	JTextField credit = new JTextField(10);
 	JTextField expiry = new JTextField(10);
 	JTextField voucher = new JTextField(10);
-	
+	int paymentType = 1; //1 means user is paying, 2 means user wants to cancel 
 	
 	public PaymentUI() {
 		
 	}
 	
-	public String[] paymentInfoDialog(int key, int price) {
-		String[] result = new String[4];
+	public ArrayList<String> paymentInfoDialog(int userType, double price, int chargeType) {
+		ArrayList<String> result = new ArrayList<String>();
 		JPanel panel = null;
-		if(key==1) { //1 means ordinary user view
-			panel = makePaymentWindow(price);
+		email.setText("");
+		credit.setText("");
+		expiry.setText("");
+		voucher.setText("");
+		
+		if(userType==1) { //1 means ordinary user view
+			panel = makePaymentWindow(price,chargeType);
 			int pay = JOptionPane.showConfirmDialog(null,panel,"Please enter payment info", JOptionPane.OK_CANCEL_OPTION);
 			if (pay == JOptionPane.OK_OPTION) {
-				result[0] = email.getText();
-				result[1] = credit.getText();
-				result[2] = expiry.getText();
-				result[3] = voucher.getText();			
+				result.add(email.getText());
+				result.add(credit.getText());
+				result.add(expiry.getText());
+				
+				if(chargeType==1) {
+					displaySuccessPaymentMessage();
+				}
+				else {
+					displaySuccessRefundMessage();
+				}
 			}
 		}
-		else if(key==2){ //2 means registered user view (saved payment and email info)
-			panel = makeRegisteredPaymentWindow(price);
+		else if(userType==2){ //2 means registered user view (saved payment and email info)
+			panel = makeRegisteredPaymentWindow(price,chargeType);
 			int pay = JOptionPane.showConfirmDialog(null,panel,"Please enter payment info", JOptionPane.OK_CANCEL_OPTION);
 		}
 		
 		return result;
 	}	
 	
-	public JPanel makePaymentWindow(int price) {
+	public JPanel makePaymentWindow(double price, int chargeType) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(5,1));
-		JLabel total = new JLabel("Your total is: $"+price);
+		String prompt=null;
+		if(chargeType==1) { //chargetype 1 = paying
+			prompt = "Your total is: $";
+		}
+		else if(chargeType==2) { //chargetype 2 = refund
+			prompt = "Your refund is: $";
+		}
+		
+		JLabel total = new JLabel(prompt+price);
 		panel.add(total);
 		panel.add(createInputPanel(new JLabel("Email"), email));
 		panel.add(createInputPanel(new JLabel("Credit Card"), credit));
 		panel.add(createInputPanel(new JLabel("Expiry Date"), expiry));
-		panel.add(createInputPanel(new JLabel("Coupon code"), voucher));
+//		if(chargeType==1) {
+//			panel.add(createInputPanel(new JLabel("Coupon code"), voucher));
+//		}
+		
 		return panel;
 	}
 	
@@ -60,9 +84,17 @@ public class PaymentUI {
 	    return panel;
 	}
 		
-	public JPanel makeRegisteredPaymentWindow(int price) {
+	public JPanel makeRegisteredPaymentWindow(double price, int chargeType) {
 		JPanel panel = new JPanel();
-		JLabel total = new JLabel("Your total is: $"+price);
+		String prompt=null;
+		if(chargeType==1) { //chargetype 1 = paying
+			prompt = "Your total is: $";
+		}
+		else if(chargeType==2) { //chargetype 2 = refund
+			prompt = "Your refund is: $";
+		}
+		
+		JLabel total = new JLabel(prompt+price);
 		panel.add(total);
 		
 		JLabel label = new JLabel(". Your payment info on file will be charged");
@@ -71,12 +103,18 @@ public class PaymentUI {
 	}
 	
 	
-	
-	public void displaySuccessMessage() {
-		JOptionPane.showMessageDialog(null, "Successfully reserved ticket");
+	//Dialog boxes
+	public void displaySuccessPaymentMessage() {
+		JOptionPane.showMessageDialog(null, "Successfully made payments");
+	}
+	public void displaySuccessRefundMessage() {
+		JOptionPane.showMessageDialog(null, "Successfully refunded payment");
 	}
 	public void displayErrorMessage() {
 		JOptionPane.showMessageDialog(null, "ERROR: cannot reserve ticket");
+	}
+	public void displayVoucherAppliedMessage() {
+		JOptionPane.showMessageDialog(null, "NOTE: You have a voucher! 15% discount has been automatically applied to your order");
 	}
 
 }

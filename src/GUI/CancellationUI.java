@@ -13,14 +13,14 @@ import javax.swing.*;
 public class CancellationUI extends JPanel {
 	
 	private JTextField emailInput = new JTextField(15);
-	private JList<String> emailList = new JList();
+	private JList<String> ticketList = new JList();
 	private JButton searchButton = new JButton("Search");
 	private JPanel searchBar = new JPanel();
-	private JButton cancelButton = new JButton("Cancel this ticket");
+	private JButton cancelButton = new JButton("Cancel all tickets");
 	private JPanel outPanel = new JPanel();
 	
 	//for testing only
-	private ArrayList<String> tickets = new ArrayList<String>();
+	
 	private String cancelledTicketNumber;
 	
 	public CancellationUI(){
@@ -33,7 +33,7 @@ public class CancellationUI extends JPanel {
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		JLabel panelTitle = new JLabel("Cancel a ticket",SwingConstants.CENTER);
+		JLabel panelTitle = new JLabel("Cancel Tickets",SwingConstants.CENTER);
 		panelTitle.setFont(new Font(Font.DIALOG, Font.BOLD, 16));
 		this.add(panelTitle,gbc);
 
@@ -45,8 +45,8 @@ public class CancellationUI extends JPanel {
 		this.add(searchBar,gbc);
 
 		outPanel.setLayout(new FlowLayout());
-		emailList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		
-		JScrollPane listScrollPane = new JScrollPane(emailList);
+		ticketList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);		
+		JScrollPane listScrollPane = new JScrollPane(ticketList);
 		listScrollPane.setPreferredSize(new Dimension(270,100));
 		outPanel.add(listScrollPane);
 
@@ -66,6 +66,12 @@ public class CancellationUI extends JPanel {
 		gbc.gridx = 1;
 		searchBar.add(searchButton,gbc);
 	}
+	
+	public void clearDisplay() {
+		emailInput.setText("");
+		DefaultListModel<String> DLM = new DefaultListModel();
+		ticketList.setModel(DLM);
+	}
 
 	public String getCancelledTicketNumber() {
 		return cancelledTicketNumber;
@@ -76,7 +82,7 @@ public class CancellationUI extends JPanel {
 	}
 
 	public JList<String> getEmailList() {
-		return emailList;
+		return ticketList;
 	}
 
 	public JButton getSearchButton() {
@@ -89,10 +95,6 @@ public class CancellationUI extends JPanel {
 
 	public JButton getCancelButton() {
 		return cancelButton;
-	}
-
-	public ArrayList<String> getTickets() {
-		return tickets;
 	}
 	public void setEmailField(String email) {
 		emailInput.setText(email);

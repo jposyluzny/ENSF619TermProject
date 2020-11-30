@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -22,6 +23,7 @@ public class AccountUI extends JPanel {
 	private JTextField creditInput = new JTextField(12);
 	private JTextField nameInput = new JTextField(12);
 	private JTextField addressInput = new JTextField(12);
+	private JTextField expiryInput = new JTextField(12);
 	
 	public AccountUI() {
 		makePanel();
@@ -51,6 +53,8 @@ public class AccountUI extends JPanel {
 		gbc.gridy = 5;
 		innerPanel.add(formatLabelAndInput("Credit   ",creditInput),gbc);
 		gbc.gridy = 6;
+		innerPanel.add(formatLabelAndInput("Expiry   ",expiryInput),gbc);
+		gbc.gridy = 7;
 		innerPanel.add(makeAccountButton,gbc);
 		
 		this.add(innerPanel, BorderLayout.SOUTH);
@@ -64,6 +68,25 @@ public class AccountUI extends JPanel {
 	    return panel;
 	}
 
+	public void setFields(String name, String addr, String email, String pass, int cred, String expr) {
+		nameInput.setText(name);
+		addressInput.setText(addr);
+		emailInput.setText(email);
+		passwordInput.setText(pass);
+		creditInput.setText(""+cred);
+		expiryInput.setText(expr);
+	}
+	
+	public void displayUpdateMessage() {
+		JOptionPane.showMessageDialog(null, "User information updated");
+	}
+	
+	public void displayRegisterMessage() {
+		JOptionPane.showMessageDialog(null, "Successfully registered account");
+	}
+
+	
+	
 	public JButton getMakeAccountButton() {
 		return makeAccountButton;
 	}
@@ -86,6 +109,9 @@ public class AccountUI extends JPanel {
 
 	public JTextField getAddressInput() {
 		return addressInput;
+	}
+	public JTextField getExpiryInput() {
+		return expiryInput;
 	}
 
 }

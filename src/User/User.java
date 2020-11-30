@@ -9,7 +9,13 @@ import Payment.*;
 public class User {
 
 	ModelController modelController;
-	Movie userSelectedMovie;
+	protected Movie userSelectedMovie;
+	
+	//additions from branden : for review by team
+	protected Theatre userSelectedTheatre;
+	protected Showtime userSelectedShowtime;
+	protected ArrayList<Seat> userSelectedSeats = new ArrayList<Seat>();
+	
 	Reservation userReservation;
 	ManageCancellationController mcc;
 	double reservationPrice;
@@ -19,12 +25,13 @@ public class User {
 		this.setMcc(new ManageCancellationController());
 	}
 	
-	//This is for testing fetching the objects from Ryans Theatre segment of this app
+	//This is for testing fetching the objects from Ryans Theatre segment of this app --> branden: for review: can get rid of this
 	public void userSelection(int movieID) {
 		this.setUserSelectedMovie(this.modelController.getMovieById(movieID));
 	}
 	
 	public void calculateReservationPrice(ArrayList<Seat> s) {
+		reservationPrice=0; //reset to 0 every time we want to re-calculate
 		for (Seat seat: s)
 			this.reservationPrice = this.reservationPrice + 12;
 	}
@@ -32,10 +39,14 @@ public class User {
 	//This is for making a reservation
 	//TESTING
 	public void makeReservation(String emailAddress) {
+		//branden's edits: for review
 		this.setUserReservation(new Reservation());
-		ArrayList<Seat> s = this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0).getSeats();
-		this.calculateReservationPrice(s);
-		this.getUserReservation().buildTickets(emailAddress, this.getUserSelectedMovie().getTheatres().get(0), this.getUserSelectedMovie(), this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0), s);
+		this.getUserReservation().buildTickets(emailAddress, userSelectedTheatre, userSelectedMovie, userSelectedShowtime, userSelectedSeats);
+		
+//		this.setUserReservation(new Reservation());
+//		ArrayList<Seat> s = this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0).getSeats();
+//		this.calculateReservationPrice(s);
+//		this.getUserReservation().buildTickets(emailAddress, this.getUserSelectedMovie().getTheatres().get(0), this.getUserSelectedMovie(), this.getUserSelectedMovie().getTheatres().get(0).getShowtimes().get(0), s);
 	}
 	
 	public void makePayment(String creditCard, String description) {
@@ -91,6 +102,30 @@ public class User {
 		this.userSelectedMovie = userSelectedMovie;
 	}
 
+	public Theatre getUserSelectedTheatre() {
+		return userSelectedTheatre;
+	}
+
+	public void setUserSelectedTheatre(Theatre userSelectedTheatre) {
+		this.userSelectedTheatre = userSelectedTheatre;
+	}
+
+	public Showtime getUserSelectedShowtime() {
+		return userSelectedShowtime;
+	}
+
+	public void setUserSelectedShowtime(Showtime userSelectedShowtime) {
+		this.userSelectedShowtime = userSelectedShowtime;
+	}
+
+	public ArrayList<Seat> getUserSelectedSeats() {
+		return userSelectedSeats;
+	}
+
+	public void setUserSelectedSeats(ArrayList<Seat> userSelectedSeats) {
+		this.userSelectedSeats = userSelectedSeats;
+	}
+
 	public Reservation getUserReservation() {
 		return userReservation;
 	}
@@ -114,11 +149,11 @@ public class User {
 	public void setReservationPrice(double reservationPrice) {
 		this.reservationPrice = reservationPrice;
 	}
-	
+
 	public static void main(String[] args) {
 		User user = new User();
 		
-//		THIS IS ALL FOR TESTING ***************************************************
+		//THIS IS ALL FOR TESTING ***************************************************
 		user.userSelection(1);
 		user.makeReservation("jimboBimbus@yahoo.com");
 		user.makePayment("1234 5678 9874 12", "03-22");
@@ -141,5 +176,6 @@ public class User {
 		
 		System.out.println("Done");
 	}
+
 
 }

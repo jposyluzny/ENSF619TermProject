@@ -52,8 +52,7 @@ public class BrowseMoviesUI extends JPanel {
 		this.add(seatButton,gbc);
 		
 	}
-	
-	
+		
 	private void createSearchField(JLabel label,JPanel panel,JComboBox combobox) {
         panel.add(label);
         panel.add(combobox); 
@@ -100,6 +99,13 @@ public class BrowseMoviesUI extends JPanel {
         layout.putConstraint(SpringLayout.SOUTH, movieInputPanel, 5, SpringLayout.SOUTH, moviePanel); 
 	}
 	
+	public void clearDisplay() {
+		movieInput.setText("");
+		DefaultListModel<String> DLM = new DefaultListModel();
+		searchList.setModel(DLM);
+		theatreList.removeAllItems();
+		showTimeList.removeAllItems();
+	}
 	
 	public JButton getSearchButton() {
 		return searchButton;
