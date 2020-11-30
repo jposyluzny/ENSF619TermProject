@@ -39,7 +39,7 @@ public class RUserAccountController extends DBController{
 		return null;
 	}
 
-	public void payFee(int fee, RegisteredUserAccount rUserAcc) {
+	public void payFee(double fee, RegisteredUserAccount rUserAcc) {
 		this.setFeePayment(new PaymentInfo(Integer.toString(rUserAcc.getCreditCard()), rUserAcc.getExpiry(), fee, true));
 		feePayment.confirmPayment();
 		

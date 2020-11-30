@@ -118,7 +118,7 @@ public class User {
 	public static void main(String[] args) {
 		User user = new User();
 		
-		//THIS IS ALL FOR TESTING ***************************************************
+//		THIS IS ALL FOR TESTING ***************************************************
 		user.userSelection(1);
 		user.makeReservation("jimboBimbus@yahoo.com");
 		user.makePayment("1234 5678 9874 12", "03-22");

@@ -16,7 +16,7 @@ public class RegisteredUser extends User {
 	private EmailServer eServ;
 	private RUserAccountController rUController;
 	private RegisteredUserAccount rUAccount;
-	private int annualFee = 20;
+	private double annualFee = 20.00;
 	
 	public RegisteredUser(String email, String password) {
 		setEServ(new EmailServer());
