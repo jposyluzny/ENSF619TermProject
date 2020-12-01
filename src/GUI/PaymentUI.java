@@ -2,6 +2,7 @@ package GUI;
 
 
 import java.awt.GridLayout;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JLabel;
@@ -38,18 +39,19 @@ public class PaymentUI {
 					result.add(email.getText());
 					result.add(credit.getText());
 					result.add(expiry.getText());
-					displaySuccessPaymentMessage(); //NEED TO CHANGE!!
 				}
 				else if(chargeType==2) {
 					result.add(credit.getText());
 					result.add(expiry.getText());
-					displaySuccessRefundMessage(); //NEED TO CHANGE!!
 				}
 			}
 		}
 		else if(userType==2){ //2 means registered user view (saved payment and email info)
 			panel = makeRegisteredPaymentWindow(price,chargeType);
 			int pay = JOptionPane.showConfirmDialog(null,panel,"Please enter payment info", JOptionPane.OK_CANCEL_OPTION);
+			if (pay == JOptionPane.OK_OPTION) {
+				result.add("not null"); //add a dummy field to tell UIController the result is not null
+			}
 		}
 		
 		return result;
@@ -103,7 +105,84 @@ public class PaymentUI {
 		panel.add(label);
 		return panel;
 	}
+		
+	//Check to see if credit card input is valid
+	public boolean checkCreditCard(String card) {
+		if(card.length()!=6) {
+			return false;
+		}
+		else {
+			try{
+				int cardNum = Integer.parseInt(card);
+				return true;
+				
+			}
+			catch(NumberFormatException e) {
+				return false;
+			}
+		}
+	}
 	
+	//Check to see if expiry input is valid
+	public boolean checkExpiryDate(String expiry) {
+		try {
+			LocalDate localDate = LocalDate.now();
+			int currentDay = localDate.getDayOfMonth();
+			int currentMonth = localDate.getMonthValue();
+			int currentYear = localDate.getYear();
+
+			String[] expiryInfo = expiry.split("/");
+			if(expiryInfo.length > 3) {
+				return false;
+			}
+			for(String element : expiryInfo) {
+				Integer.parseInt(element);
+			}
+			
+			int inputDay = Integer.parseInt(expiryInfo[0]);
+			int inputMonth = Integer.parseInt(expiryInfo[1]);
+			int inputYear = Integer.parseInt(expiryInfo[2]) + 2000;
+
+			if(inputDay < 1 || inputDay > 31) {
+				return false;
+			}
+			if(inputMonth < 1 || inputMonth > 12) {
+				return false;
+			}
+			if(inputYear < currentYear) {
+				return false;
+			}
+			if(inputYear == currentYear) {
+				if(inputMonth < currentMonth) {
+					return false;
+				}
+				else if(inputMonth == currentMonth) {
+					if(inputDay < currentDay) {
+						return false;
+					}
+				}
+			}
+		} catch (IndexOutOfBoundsException | NumberFormatException e) {
+			return false;
+		}
+		return true;
+	}
+	
+	
+	//check to see if user email input is valid
+	public boolean checkEmailAddress(String email) {
+		try{
+			String firstHalf = email.split("@")[0];
+			String secondHalf = email.split("@")[1];
+			String dotCom = secondHalf.substring(secondHalf.length() - 4);
+			if(!dotCom.equals(".com")) {
+				return false;
+			}
+		} catch(IndexOutOfBoundsException e) {
+			return false;
+		}
+		return true;
+	}
 	
 	//Dialog boxes
 	public void displaySuccessPaymentMessage() {

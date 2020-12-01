@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
@@ -185,11 +186,11 @@ public class UIController {
 				public void actionPerformed(ActionEvent e) {
 					for(int i=0;i<20;i++) {
 						if(e.getSource()==seats[i]) {
-							if(seats[i].getText()=="") {
+							if(seats[i].getText()=="" && user.getUserSelectedShowtime()!=null) {
 								seats[i].setText("O");
 								selectedSeatNumbers.add(i);
 							}
-							else if(seats[i].getText()=="O") {
+							else if(seats[i].getText()=="O" && user.getUserSelectedShowtime()!=null) {
 								seats[i].setText("");
 								selectedSeatNumbers.remove(Integer.valueOf(i));
 							}
@@ -211,8 +212,10 @@ public class UIController {
 	}
 	
 	private void addSeatViewListeners() {
-		//Action 6: Adds action listener to seat buttons in diagram
-		addSeatButtonListeners();
+		
+		//Action 6: Adds action listener to seat buttons in diagram 
+    	//only after user presses view available seats
+    	addSeatButtonListeners();
 		
 		//Action 7: Reserving a ticket button
 		seatView.getTicketButton().addActionListener(new ActionListener() {
@@ -239,23 +242,42 @@ public class UIController {
 						if(hasVoucher==true) {
 							paymentView.displayVoucherAppliedMessage();
 						}
-						user.makeReservation(paymentInfo.get(0));
-						user.makePayment(paymentInfo.get(1), paymentInfo.get(2));
-						user.confirmPayment();
-						resetDisplays();
-
+						
+						//check valid user inputs
+						if(paymentView.checkEmailAddress(paymentInfo.get(0))==false) {
+							paymentView.displayErrorMessage("Email format is wrong!");
+						}
+						else if(paymentView.checkCreditCard(paymentInfo.get(1))==false) {
+							paymentView.displayErrorMessage("Credit Card Not Valid");
+						}
+						else if(paymentView.checkExpiryDate(paymentInfo.get(2))==false) {
+							paymentView.displayErrorMessage("Expiry date is wrong!");
+						}
+						
+						//if we get here, that means all checks passed successfully
+						else {
+							user.makeReservation(paymentInfo.get(0));
+							user.makePayment(paymentInfo.get(1), paymentInfo.get(2));
+							user.confirmPayment();
+							paymentView.displaySuccessPaymentMessage();
+							resetDisplays();
+						}
 					}
 					
-					else if(userType==2) { //registered user reserving a ticket
+					else if(paymentInfo.isEmpty()==false && userType==2) { //registered user reserving a ticket
 						((RegisteredUser)user).makeReservation(); //explicitly down-casting to registered user 
 						((RegisteredUser)user).makePayment();
 						((RegisteredUser)user).confirmPayment();
+						paymentView.displaySuccessPaymentMessage();
 						resetDisplays();
 					}
 				}
 		    }
 		});
 	}
+	
+
+		
 	
 	private void addCancelViewListeners() {
 		
@@ -291,15 +313,33 @@ public class UIController {
 		    	if(numberOfReservations!=0) {
 			    	if(userType==1) {
 			    		ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,numberOfReservations*12*0.85,2); //not 100% sure if i need this 85% here
+						
 			    		if(paymentInfo.isEmpty()==false) {
-			    			user.confirmCancellation(userEmailInput, paymentInfo.get(0), paymentInfo.get(1));
+				    		//check valid user inputs
+							if(paymentView.checkCreditCard(paymentInfo.get(0))==false) {
+								paymentView.displayErrorMessage("Credit Card Not Valid");
+							}
+							else if(paymentView.checkExpiryDate(paymentInfo.get(1))==false) {
+								paymentView.displayErrorMessage("Expiry date is wrong!");
+							}
+							
+							//if we get here, that means all checks passed successfully
+							else {
+								user.confirmCancellation(userEmailInput, paymentInfo.get(0), paymentInfo.get(1));
+								paymentView.displaySuccessRefundMessage();
+								cancelView.clearDisplay();
+				    		}
 			    		}
+
 			    	}
 			    	else if(userType==2) {
 			    		ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,numberOfReservations*12, 2);
-			    		((RegisteredUser)user).confirmCancellation();
+			    		if(paymentInfo.isEmpty()==false) {
+				    		((RegisteredUser)user).confirmCancellation();
+				    		paymentView.displaySuccessRefundMessage();
+				    		cancelView.clearDisplay();
+			    		}
 			    	}
-			    	cancelView.clearDisplay();
 		    	}
 		    }
 		});
@@ -310,7 +350,11 @@ public class UIController {
 		app.getButton5().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<String> paymentInfo = paymentView.paymentInfoDialog(userType,20.00,1);
-				((RegisteredUser)user).payFee();
+				
+				if(paymentInfo.isEmpty()==false) {
+					((RegisteredUser)user).payFee();
+					paymentView.displaySuccessPaymentMessage();
+				}
 		    }
 		});
 		
@@ -331,41 +375,54 @@ public class UIController {
 		    		String[] accountData = {newFirstName, newLastName, newAddress, newEmail, 
 							newPassword, newCredit, newExpiry};
 
-		    		if(userType==1) {		    				    					    		
-			    		RegisteredUser newAccount = new RegisteredUser(accountData);
+		    		if(userType==1) {		
+		    			PaymentUI payment = new PaymentUI();
+			    		ArrayList<String> paymentInfo = payment.paymentInfoDialog(2,20,1);
 			    		
-			    		if(newAccount.getRUAccount() == null) {
-			    			accountView.displayErrorMessage(newAccount.getRUController().checkNewAccountData(accountData));
-			    		} 	
-			    		
-			    		else {
-				    		PaymentUI payment = new PaymentUI();
-				    		ArrayList<String> paymentInfo = payment.paymentInfoDialog(2,20,1);
-			    			accountView.displayRegisterMessage();
-			    			
-			    			app.setVisible(false); 
-			    			
-			    			//re-launch application
-			    			Login loginPrompt = new Login();
-			    			userType = loginPrompt.getUserType();
-			    			
-			    			if(userType==1) {
-			    				app.resetDisplays();
-			    				app.setVisible(true);
-			    			}
-			    			else if(userType==2) {
-			    				
-				    			RegisteredUser newUser = new RegisteredUser(loginPrompt.getEmailAddress(),
-				    					loginPrompt.getPasswordInput());
-				    			
-				    			if(user.getUserSelectedShowtime()!=null) {
-				    				newUser.getUserSelectedShowtime().setSeats(user.getUserSelectedShowtime().getSeats());
-					    			user = newUser;
-				    			}
-				    			
-				    			app.swapUserGUI(loginPrompt);
-				    			app.setVisible(true); 
-			    			}
+			    		if(paymentInfo.isEmpty()==false) { 
+			    			//check valid payment information
+							if(paymentView.checkCreditCard(newCredit)==false) {
+								paymentView.displayErrorMessage("Credit Card Not Valid");
+							}
+							else if(paymentView.checkExpiryDate(newExpiry)==false) {
+								paymentView.displayErrorMessage("Expiry date is wrong!");
+							}
+							
+							//payment info from user is valid, that means we proceed with creating a new user
+							else {
+								RegisteredUser newAccount = new RegisteredUser(accountData);
+					    		
+					    		if(newAccount.getRUAccount() == null) {
+					    			accountView.displayErrorMessage(newAccount.getRUController().checkNewAccountData(accountData));
+					    		} 	
+					    		
+					    		else {
+						    		accountView.displayRegisterMessage();
+					    			app.setVisible(false); 
+					    			
+					    			//re-launch application
+					    			Login loginPrompt = new Login();
+					    			userType = loginPrompt.getUserType();
+					    			
+					    			if(userType==1) {
+					    				app.resetDisplays();
+					    				app.setVisible(true);
+					    			}
+					    			else if(userType==2) {
+					    				
+						    			RegisteredUser newUser = new RegisteredUser(loginPrompt.getEmailAddress(),
+						    					loginPrompt.getPasswordInput());
+						    			
+						    			if(user.getUserSelectedShowtime()!=null) {
+						    				newUser.getUserSelectedShowtime().setSeats(user.getUserSelectedShowtime().getSeats());
+						    			}
+						    			
+						    			user = newUser;
+						    			app.swapUserGUI(loginPrompt);
+						    			app.setVisible(true); 
+					    			}
+					    		}
+							}
 			    		}
 		    		}
 		    		
@@ -387,7 +444,6 @@ public class UIController {
 		    			else {
 		    				accountView.displayErrorMessage(controller.checkExistingAccountData(accountData));
 		    			}
-		    			
 		    		}
 		    	}
 		    }
