@@ -30,12 +30,12 @@ public class DBController {
     /**
      * Username
      */
-    protected String login = "josh";
+    protected String login = "dbuser";
 
     /**
      * Password
      */
-    protected String password = "password";
+    protected String password = "dbpass";
 
     /**
      * Constructor for DBController.
@@ -49,7 +49,6 @@ public class DBController {
 
                 // If this fails make sure your connectionInfo and login/password are correct
                 jdbc_connection = DriverManager.getConnection(connectionInfo, login, password);
-                System.out.println("Connected to: " + connectionInfo + "\n");
 
             } catch (SQLException e) {
                 e.printStackTrace();

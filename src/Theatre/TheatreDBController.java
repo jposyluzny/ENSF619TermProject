@@ -9,8 +9,15 @@ import java.sql.*;
  */
 public class TheatreDBController extends DBController{
 
+    /**
+     * Single instance of TheatreDBController
+     */
     static TheatreDBController singleInstance = null;
 
+    /**
+     * Method for getting single instance of TheatreDBController
+     * @return TheatreDBController instance
+     */
     public static TheatreDBController getSingleInstance() {
         if(singleInstance == null){
             singleInstance = new TheatreDBController();
