@@ -1,7 +1,6 @@
 package Theatre;
 
 import java.sql.*;
-import java.util.ArrayList;
 
 /**
  * Controller class for the Movie database controller. This class functions on the assumption that the SQL database
@@ -9,8 +8,15 @@ import java.util.ArrayList;
  */
 public class MovieDBController extends DBController{
 
+    /**
+     * Single instance of MovieDBController
+     */
     static MovieDBController singleInstance = null;
 
+    /**
+     * Method to get all movies from database
+     * @return ResultSet containing all movies
+     */
     public ResultSet initializeMovies(){
         String sql = "SELECT * FROM movie";
         ResultSet movies = null;
@@ -24,6 +30,10 @@ public class MovieDBController extends DBController{
         return movies;
     }
 
+    /**
+     * Method for getting single instance of MovieDBController
+     * @return MovieDBController instance
+     */
     public static MovieDBController getSingleInstance() {
         if(singleInstance == null){
             singleInstance = new MovieDBController();

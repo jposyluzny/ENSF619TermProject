@@ -4,17 +4,31 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-//TODO: Consider renaming
+/**
+ * Controller class for handling interactions between user and the database controllers
+ */
 public class ModelController {
+    /**
+     * DBController objects
+     */
     MovieDBController movieDBController;
     TheatreDBController theatreDBController;
     ShowtimeDBController showtimeDBController;
     SeatDBController seatDBController;
     VoucherDBController voucherDBController;
 
+    /**
+     * ArrayList of movies from database
+     */
     ArrayList<Movie> movies;
+    /**
+     * ArrayList of vouchers from database
+     */
     ArrayList<Voucher> vouchers;
 
+    /**
+     * Basic constructor for ModelController
+     */
     public ModelController(){
         movieDBController = MovieDBController.getSingleInstance();
         theatreDBController = TheatreDBController.getSingleInstance();
@@ -26,6 +40,10 @@ public class ModelController {
         populateVouchers();
     }
 
+    /**
+     * Method to get all movies and their associated information from the database
+     * @return ArrayList<Movie>
+     */
     public ArrayList<Movie> getMovies(){
         ArrayList<Movie> movielist = new ArrayList<>();
         ResultSet dbmovies = movieDBController.initializeMovies();
@@ -43,6 +61,11 @@ public class ModelController {
     }
 
     // We only have one theatre, as specified
+
+    /**
+     * Fills the passed ArrayList<Movie> with its associated theatre and showtimes
+     * @param movies
+     */
     private void populateTheatresAndShowtimes(ArrayList<Movie> movies){
         for(Movie m: movies){
             ArrayList<Theatre> theatres = new ArrayList<>();
@@ -57,6 +80,11 @@ public class ModelController {
         }
     }
 
+    /**
+     * Gets showtimes for a movie, returning them as an ArrayList
+     * @param movieid Movie to check
+     * @return ArrayList<Showtime> containing all showtimes for selected movie
+     */
     private ArrayList<Showtime> showtimesToArray(int movieid){
         ResultSet dbshowtimes = showtimeDBController.getShowtimes(movieid);
         ArrayList<Showtime> showtimes = new ArrayList<Showtime>();
@@ -76,6 +104,11 @@ public class ModelController {
         return showtimes;
     }
 
+    /**
+     * Returns an arraylist of seats for the selected showtime
+     * @param showid Showtime to check seats for
+     * @return ArrayList<Seat> for given showtime id
+     */
     private ArrayList<Seat> seatsToArray(int showid){
         ResultSet dbseats = seatDBController.getSeats(showid);
         ArrayList<Seat> seats = new ArrayList<Seat>();
@@ -93,6 +126,9 @@ public class ModelController {
         return seats;
     }
 
+    /**
+     * Method to populate vouchers with ones in database
+     */
     private void populateVouchers(){
         ResultSet dbvouchers = voucherDBController.getVouchers();
         vouchers = new ArrayList<Voucher>();
@@ -107,10 +143,19 @@ public class ModelController {
         }
     }
 
+    /**
+     * Check if entered email has any attached vouchers
+     * @param email Email to check
+     * @return Voucher object if it exists, null if not
+     */
     public Voucher findVoucher(String email){
         return Voucher.findByEmail(vouchers, email);
     }
-    
+
+    /**
+     * Remove voucher from ArrayList
+     * @param voucher Voucher to remove
+     */
     public void removeVoucher(Voucher voucher) {
     	for (Voucher v: this.getVouchers()) {
     		if (v == voucher) {
@@ -120,7 +165,9 @@ public class ModelController {
     	}
     }
 
-    // Call this once to setup database
+    /**
+     * Development method that is was only called once to populate the initial seat entries in the database
+     */
     public static void populateDBwithSeats(){
         ModelController a = new ModelController();
         ArrayList<Movie> b = a.getMovies();
@@ -128,6 +175,11 @@ public class ModelController {
         System.out.println("Done");
     }
 
+    /**
+     * Method to find movie based on passed id
+     * @param movieid ID to check
+     * @return Movie object matching ID, null if none found
+     */
     public Movie getMovieById(int movieid){
         for(Movie m: movies){
             if(m.getId() == movieid)
@@ -137,10 +189,18 @@ public class ModelController {
         return null;
     }
 
+    /**
+     * Basic getter for movielist
+     * @return ArrayList of Movie objects
+     */
     public ArrayList<Movie> getMovieList(){
         return movies;
     }
-    
+
+    /**
+     * Basic getter for vouchers
+     * @return ArrayList of Voucher objects
+     */
 	public ArrayList<Voucher> getVouchers() {
 		return vouchers;
 	}
