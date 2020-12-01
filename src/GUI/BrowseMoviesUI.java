@@ -3,6 +3,10 @@ package GUI;
 import java.awt.*;
 import javax.swing.*;
 
+/**
+ * Class that creates the movie input UI as a JPanel. Handles UI for search and selection
+ * of movies, theatres, and showtimes.
+ */
 public class BrowseMoviesUI extends JPanel {
 	
 	private JPanel moviePanel = new JPanel();
@@ -12,15 +16,23 @@ public class BrowseMoviesUI extends JPanel {
 	private JTextField movieInput = new JTextField(15);
 	private JButton searchButton = new JButton("Search");
 	private JButton seatButton = new JButton("View available seats");
-	
 	private JList<String> searchList;
 	private JComboBox<String> theatreList = new JComboBox<String>();
 	private JComboBox<String> showTimeList = new JComboBox<String>();
 
+	/**
+	 * Constructor used to create a BrowseMoviesUI panel by setting up all java swing GUI
+	 * components in the appropriate locations.
+	 */
 	public BrowseMoviesUI(){  
 		makePanel(); 
 	}
 	
+	/**
+	 * Function used to place all java swing components for GUI display in appropriate locations.
+	 * This includes an area to search for a movie, and comboboxes to select a theatre and
+	 * showtime. Also includes a button that will generate a schematic of available seats.
+	 */
 	private void makePanel() { 
 		this.setLayout(new GridBagLayout());	
 		JLabel panelTitle = new JLabel("Reserve a Ticket",SwingConstants.CENTER);
@@ -52,12 +64,25 @@ public class BrowseMoviesUI extends JPanel {
 		this.add(seatButton,gbc);
 		
 	}
-		
+	
+	/**
+	 * Function used to place place a JLabel and JCombobox with a horizontal alignment 
+	 * to a container panel.
+	 * 
+	 * @param label JLabel for search field
+	 * @param panel container to arrange components in
+	 * @param combobox drop down menu to make selections
+	 */
 	private void createSearchField(JLabel label,JPanel panel,JComboBox combobox) {
         panel.add(label);
         panel.add(combobox); 
 	}
 	
+	/**
+	 * Function used to create movie search panel. This includes the search bar where a user types in
+	 * their input, the search button that will read the input, and the JList output field that will display
+	 * the list of movies that matches the user's input. 
+	 */
 	private void searchPanel() {
 		JPanel temp = new JPanel();
 		temp.setLayout(new GridBagLayout());
@@ -99,6 +124,10 @@ public class BrowseMoviesUI extends JPanel {
         layout.putConstraint(SpringLayout.SOUTH, movieInputPanel, 5, SpringLayout.SOUTH, moviePanel); 
 	}
 	
+	/**
+	 * Function used to clear all user input fields from this JPanel. Will be called by 
+	 * UIController when it needs to clear the view.
+	 */
 	public void clearDisplay() {
 		movieInput.setText("");
 		DefaultListModel<String> DLM = new DefaultListModel();
@@ -107,6 +136,7 @@ public class BrowseMoviesUI extends JPanel {
 		showTimeList.removeAllItems();
 	}
 	
+	//Getters and Setters
 	public JButton getSearchButton() {
 		return searchButton;
 	}

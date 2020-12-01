@@ -7,6 +7,10 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+/**
+ * Constructor used to creates the JFrame GUI. Has instances of all other UI's in this package, and 
+ * creates the GUI by placing the different panels on the GUI in their proper locations.
+ */
 public class MovieUI extends JFrame {
 
 	private JPanel reserveTicketPanel = new JPanel();
@@ -32,6 +36,16 @@ public class MovieUI extends JFrame {
 	//user type
 	int userType=1; //1 is guest, 2 is registered
 	
+	/**
+	 * Constructor used to create MovieUI user interface
+	 * 
+	 * @param mV BrowseMovieUI panel
+	 * @param sV BrowseSeatUI panel
+	 * @param cV CancellationUI panel
+	 * @param aV AccountUI panel
+	 * @param pV PaymentUI panel
+	 * @param i user type, 1 is guest 2 is registered
+	 */
 	public MovieUI(BrowseMoviesUI mV, BrowseSeatUI sV,CancellationUI cV, AccountUI aV, PaymentUI pV, int i) {
 		movieView = mV;
 		seatView = sV;
@@ -41,6 +55,10 @@ public class MovieUI extends JFrame {
 		userType=i;
 	}
 	
+	/**
+	 * Function used to clear all user input fields from this JPanel. Will be called by 
+	 * UIController when it needs to clear the view.
+	 */
 	public void resetDisplays() {
 		rightPanel.removeAll();
 		rightPanel.revalidate();
@@ -49,6 +67,12 @@ public class MovieUI extends JFrame {
 		accountView.clearInputFields();
 	}
 	
+	/**
+	 * Function used to swap between a guest UI to a registeredUI. This is called by the UIController
+	 * when a guest user creates a registered user account.
+	 * 
+	 * @param login Login instance, which holds info of registered uesr email, password, and user type
+	 */
 	public void swapUserGUI(Login login) {
 		leftPanel.removeAll();
 		leftPanel.revalidate();
@@ -57,16 +81,26 @@ public class MovieUI extends JFrame {
 		cancelView.setEmailField(login.getEmailAddress());
 		accountView.getMakeAccountButton().setText("Update Account");
 	}
+	
+	/**
+	 * Function used to create a UI for a guest user
+	 */
 	public void makeOrdinaryGUI() {
 		makeOrdinaryUserPanel();
 		setUpGUI();
 	}
 	
+	/**
+	 * Function used to create a UI for a registered user
+	 */
 	public void makeRegisteredGUI(String email) {
 		makeRegisteredUserPanel(email);
 		setUpGUI();
 	}
 	
+	/**
+	 * Function used to place all panels and java swing components for GUI display in appropriate locations.
+	 */
 	public void setUpGUI() {
 	    //Sets up the left and right halves of the GUI
 		rightPanel.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
@@ -88,18 +122,30 @@ public class MovieUI extends JFrame {
 		setVisible(true);
 	}
 	
+
+	/**
+	 * Used to create the registered user UI panel
+	 * 
+	 * @param email registered user's email address
+	 */
 	private void makeRegisteredUserPanel(String email) {
 		JButton[] buttons = {button1, button2, button4,button5};
 		createLeftPanel("Welcome Back "+email,buttons);
 		addButtonListeners();		
 	}
 	
+	/**
+	 * Used to create the guest user UI panel
+	 */
 	private void makeOrdinaryUserPanel() {
 		JButton[] buttons = {button1, button2, button3};
 		createLeftPanel("Welcome Guest",buttons);
 		addButtonListeners();
 	}
 	
+	/**
+	 * Creates the panel on the left side, by adding either the registered or the guest user panels
+	 */
 	private void createLeftPanel(String welcomeMsg, JButton[] buttons) {
 		leftPanel.setLayout(new GridLayout(buttons.length+1,1));
 		JPanel titlePanel = new JPanel();
@@ -122,25 +168,40 @@ public class MovieUI extends JFrame {
 		}
 	}
 	
+	/**
+	 * Creates the panel on the left side, by adding either the registered or the guest user panels
+	 */
 	private void createReserveTicketPanel() {
 		reserveTicketPanel.setLayout(new GridLayout(2,1));	
 		reserveTicketPanel.add(movieView);	
 		reserveTicketPanel.add(seatView);
 	}
 	
+	/**
+	 * Creates the ticket cancellation panel
+	 */
 	private void createCancelTicketPanel() {
 		cancelTicketPanel.add(cancelView);
 	}
-	
+
+	/**
+	 * Creates the registered user update info panel
+	 */
 	private void createUpdatePanel() {
 		accountView.getMakeAccountButton().setText("Update Account");
 		accountPanel.add(accountView);
 	}
 	
+	/**
+	 * Creates the guest user create user panel
+	 */
 	private void createAccountPanel() {
 		accountPanel.add(accountView);
 	}
 	
+	/**
+	 * Add listeners to all buttons in GUI panel
+	 */
 	private void addButtonListeners() {
 		//button1
 		button1.addActionListener(new ActionListener() {
@@ -192,6 +253,7 @@ public class MovieUI extends JFrame {
 
 	}
 	
+	//Getters and Setters
 	public BrowseMoviesUI getMovieView() {
 		return movieView;
 	}

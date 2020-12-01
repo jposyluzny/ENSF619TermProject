@@ -2,6 +2,10 @@ package GUI;
 import RegisteredUser.RegisteredUser;
 import User.User;
 
+/**
+ * Driver application class used to run the entire program.
+ *
+ */
 public class MovieApp {
 
 	public static void main(String[] args) {

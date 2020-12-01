@@ -7,6 +7,10 @@ import javax.swing.JTextField;
 
 import RegisteredUser.RegisteredUser;
 
+/**
+ * Class used to create a Login interface, using JOptionPanes. Prompts a user to either select the
+ * guest UI or login to their registered account. 
+ */
 public class Login {
 	
 	private RegisteredUser rUser;
@@ -14,11 +18,20 @@ public class Login {
 	private String passwordInput=null;
 	private int userType=1; //1 for ordinary, 2 for registered (default ordinary)
 	
+	/**
+	 * Constructor used to create a Login UI, using a series of JOptionPanes.
+	 */
 	public Login() {
 		userType = makeLoginWindow();
 	}
 	
-	//returns 1 if ordinary user, returns 2 if registered user
+	/**
+	 * Makes login window used to get input from user, to determine if the GuestUI or RegisteredUI should
+	 * be launched by the UIController. If user chooses to login, will store the email address and password
+	 * the user entered to find any matching credentials.
+	 * 
+	 * @return 1 if ordinary user, returns 2 if registered user
+	 */
 	public int makeLoginWindow() { 
 		String[] options = new String[] {"Login","Guest"};
 	    int response = JOptionPane.showOptionDialog(null, "Would you like to login or continue as guest?", "Login Window",
@@ -40,8 +53,13 @@ public class Login {
 		}
 		return 1; //returns 1 if guest
 	}
-	
-	//returns 0 if login fails, 1 if login successful, 2 if user cancels operation 
+	 
+	/**
+	 * Makes login window dialog, prompting user to enter their credentials. Uses a RegisteredUser
+	 * object to verify the combination of login credentials. 
+	 * 
+	 * @return 0 if login fails, 1 if login successful, 2 if user cancels operation
+	 */
 	private int makeLoginPanel() {
 		
 		JTextField username = new JTextField(10);
@@ -69,7 +87,7 @@ public class Login {
 	    return 2; //user exit window
 	}
 	
-	
+	//Getters and Setters
 	public String getEmailAddress() {
 		return emailAddress;
 	}

@@ -24,6 +24,9 @@ import User.User;
 import Theatre.Showtime;
 import Theatre.Seat;
 
+/**
+ * Controller class used to handle all functionality and display of the user interface
+ */
 public class UIController {
 		
 	private MovieUI app;
@@ -38,6 +41,14 @@ public class UIController {
 	private ArrayList<Integer> selectedSeatNumbers = new ArrayList<Integer>();
 	int userType = 1;
 	
+
+	/**
+	 * Constructor used to create the controller class. If the user type is 1, a guest user UI is
+	 * created. If the user type is 2, a registered user UI is created.
+	 * 
+	 * @param a instance of the MovieUI, used to pass instances of all other UI's
+	 * @param u instance of user, can be registered or unregistered. Used for functionality to communicate with other packages
+	 */
 	public UIController(MovieUI a,User u) {
 		this.app=a;
 		movieView = app.getMovieView();
@@ -64,6 +75,11 @@ public class UIController {
 		addAccountViewListeners();			
 	}
 	
+	/**
+	 * Runs the application
+	 * 
+	 * @param login login object used to tell controller if the user is registered or a guest
+	 */
 	public void runApp(Login login) {
 		if(login.getUserType()==1){
 			app.makeOrdinaryGUI();
@@ -73,7 +89,9 @@ public class UIController {
 		}
 	}
 	
-	//this method adds all action listeners to movie-browsing panel
+	/**
+	 * Adds actionlisteners to all swing components from the BrowseMoviesUI panel
+	 */
 	private void addMovieViewListeners() {
 		
 		//Action 1: Search Button to search movies
@@ -177,7 +195,9 @@ public class UIController {
 		});		
 	}
 	
-	//Clicking button in seat diagram lets user select seats to reserve
+	/**
+	 * Adds actionlisteners to the JButtons in the seat diagram panel
+	 */
 	private void addSeatButtonListeners() {
 		JButton[] seats = seatView.getSeats();
 		
@@ -201,6 +221,9 @@ public class UIController {
 		}
 	}
 
+	/**
+	 * Used to reset all displays
+	 */
 	private void resetDisplays() {
 		movieView.clearDisplay();
 		seatView.clearDisplay();
@@ -211,6 +234,9 @@ public class UIController {
 		user.getUserSelectedSeats().clear();
 	}
 	
+	/**
+	 * Adds actionlisteners to all swing components to the BrowseSeatUI panel
+	 */
 	private void addSeatViewListeners() {
 		
 		//Action 6: Adds action listener to seat buttons in diagram 
@@ -276,9 +302,9 @@ public class UIController {
 		});
 	}
 	
-
-		
-	
+	/**
+	 * Adds actionlisteners to all swing components to the CancellationUI panel
+	 */
 	private void addCancelViewListeners() {
 		
 		//Action 8: User types email address to view the tickets they have booked
@@ -345,6 +371,9 @@ public class UIController {
 		});
 	}
 	
+	/**
+	 * Adds actionlisteners to all swing components to the AccountUI panel
+	 */
 	private void addAccountViewListeners() {
 		//Action 10: Registered user pays annual fee
 		app.getButton5().addActionListener(new ActionListener() {

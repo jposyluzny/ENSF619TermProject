@@ -11,6 +11,11 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+
+/**
+ * Class that creates the movie seat input UI as a JPanel. Each seat is represented by
+ * a JButton that will allow a user to view available seats and also select a new seat to reserve.
+ */
 public class BrowseSeatUI extends JPanel {
 
 	JButton seat1, seat2, seat3, seat4, seat5,
@@ -28,13 +33,21 @@ public class BrowseSeatUI extends JPanel {
 	private JButton ticketButton = new JButton("Reserve this seat!");
 	
 
+	/**
+	 * Constructor used to create a BrowseSeatUI panel by setting up all java swing GUI
+	 * components in the appropriate locations.
+	 */
 	public BrowseSeatUI() { //choice = registered(2) or ordinary(1)
 		createButtons(seatDiagram);
 		createPanel();
 	}
 
+	/**
+	 * Function used to place all java swing components for GUI display in appropriate locations.
+	 * This includes a 2D grid of buttons representing seats, and a button used to reserve selected
+	 * seats. 
+	 */
 	private void createPanel() {
-		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.gridx = 0;
@@ -53,6 +66,13 @@ public class BrowseSeatUI extends JPanel {
 		
 	}
 	
+	
+	/**
+	 * Creates a 2D, 4x5 grid of JButtons representing the 20 seats in the movie theatre.
+	 * This allows user to view available seats, and select their desired seats.
+	 * 
+	 * @param panel container panel to place the seat buttons
+	 */
 	private void createButtons(JPanel panel) {
 		for(int i=0;i<20;i++) {
 			seats[i] = new JButton();
@@ -62,6 +82,11 @@ public class BrowseSeatUI extends JPanel {
 		panel.setLayout(new GridLayout(4,5));
 	}
 
+	/**
+	 * This panel is a container for the grid of seats, and serves to better display the schematic
+	 * of the theatre by adding a "Screen" to the display, so that a user knows where the screen
+	 * is when selecting their seat.
+	 */
 	private void createTheatreDiagram() {
 		theatreDiagram.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -84,12 +109,17 @@ public class BrowseSeatUI extends JPanel {
 		theatreDiagram.setBackground(Color.WHITE);
 	}
 	
+	/**
+	 * Function used to clear the seat diagram. Will be called by UIController when it needs to clear the view.
+	 */
 	public void clearDisplay() {
 		for(int i=0;i<20;i++) {
 			seats[i].setText("");
 		}
 	}
 	
+	
+	//Getters and Setters
 	public JButton[] getSeats() {
 		return seats;
 	}
